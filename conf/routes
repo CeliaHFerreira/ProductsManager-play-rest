@@ -1,11 +1,47 @@
 # Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
 
-# An example controller showing a sample home page
+
+# Routes home
 GET     /                           controllers.HomeController.index
-GET    /explore                     controllers.HomeController.explore
-GET    /tutorial                    controllers.HomeController.tutorial
+POST    /                           controllers.HomeController.index
+
+
+# Routes marcas
+GET     /marcas                     controllers.BrandsController.index
+POST    /marcas                     controllers.BrandsController.index
+
+
+# Routes marca
+GET    /marcas/marca                     controllers.BrandController.index
+PUT    /marcas/marca                     controllers.BrandController.index
+DELETE    /marcas/marca                     controllers.BrandController.index
+
+
+# Routes categoria
+GET    /categoria                     controllers.CategoriesController.index
+POST    /categoria                     controllers.CategoriesController.index
+PUT    /categoria                     controllers.CategoriesController.index
+DELETE    /categoria                     controllers.CategoriesController.index
+
+
+# Routes cartegoria desde una marca
+GET    /marca/categoria                     controllers.CategoriesController.index
+POST    /marca/categoria                     controllers.CategoriesController.index
+PUT    /marca/categoria                     controllers.CategoriesController.index
+DELETE    /marca/categoria                     controllers.CategoriesController.index
+
+
+# Routes producto desde marca
+GET    /marca/producto                     controllers.ProductController.index
+PUT    /marca/producto                     controllers.ProductController.index
+DELETE    /marca/producto                     controllers.ProductController.index
+
+# Routes producto desde categoria
+GET    /categoria/producto                     controllers.ProductController.index
+PUT    /categoria/producto                     controllers.ProductController.index
+DELETE    /categoria/producto                     controllers.ProductController.index
+
+
 
 
 # Map static resources from the /public folder to the /assets URL path
