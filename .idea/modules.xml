@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/play-java-hello-world-tutorial.iml" filepath="$PROJECT_DIR$/.idea/modules/play-java-hello-world-tutorial.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/play-java-hello-world-tutorial-build.iml" filepath="$PROJECT_DIR$/.idea/modules/play-java-hello-world-tutorial-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/play-products-manager.iml" filepath="$PROJECT_DIR$/.idea/modules/play-products-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/play-products-manager-build.iml" filepath="$PROJECT_DIR$/.idea/modules/play-products-manager-build.iml" />
     </modules>
   </component>
 </project>
