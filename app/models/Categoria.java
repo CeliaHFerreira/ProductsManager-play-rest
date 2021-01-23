@@ -46,4 +46,13 @@ public class Categoria {
     public void setMarcaID(String marcaID) {
         this.marcaID = marcaID;
     }
+
+    static public Categoria findCategoria(String nombre) {
+        for (int c = 0; c < listaCategoria.size(); c++) {
+            if (Categoria.listaCategoria.get(c).getNombre().equals(nombre)) {
+                return Categoria.listaCategoria.get(c);
+            }
+        }
+        return null;
+    }
 }

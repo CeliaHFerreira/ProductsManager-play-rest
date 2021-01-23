@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+
 public class Producto {
     String nombre;
     String productoID;
@@ -7,10 +9,10 @@ public class Producto {
     String categoriaID;
     Boolean vegano;
     Boolean aptoCG;
-    float PVP;
+    Double PVP;
     String HNR;
 
-    public Producto(String nombre, String productoID, String marcaID, String categoriaID, Boolean vegano, Boolean aptoCG, float PVP, String HNR) {
+    public Producto(String nombre, String productoID, String marcaID, String categoriaID, Boolean vegano, Boolean aptoCG, Double PVP, String HNR) {
         this.nombre = nombre;
         this.productoID = productoID;
         this.marcaID = marcaID;
@@ -20,6 +22,7 @@ public class Producto {
         this.PVP = PVP;
         this.HNR = HNR;
     }
+    static public ArrayList<Producto> listaProducto = new ArrayList<Producto>();
 
     public String getNombre() {
         return nombre;
@@ -45,13 +48,11 @@ public class Producto {
         return aptoCG;
     }
 
-    public float getPVP() {
+    public Double getPVP() {
         return PVP;
     }
 
-    public String getHNR() {
-        return HNR;
-    }
+    public String getHNR() { return HNR; }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -77,11 +78,18 @@ public class Producto {
         this.aptoCG = aptoCG;
     }
 
-    public void setPVP(float PVP) {
+    public void setPVP(Double PVP) {
         this.PVP = PVP;
     }
 
-    public void setHNR(String HNR) {
-        this.HNR = HNR;
+    public void setHNR(String HNR) { this.HNR = HNR; }
+
+    static public Producto findProducto(String nombre) {
+        for (int p = 0; p < listaProducto.size(); p++) {
+            if (Producto.listaProducto.get(p).getNombre().equals(nombre)) {
+                return Producto.listaProducto.get(p);
+            }
+        }
+        return null;
     }
 }

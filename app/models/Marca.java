@@ -35,25 +35,15 @@ public class Marca {
         return vegano;
     }
 
-    public void setMarcaID(String marcaID) {
-        this.marcaID = marcaID;
-    }
+    public void setMarcaID(String marcaID) { this.marcaID = marcaID; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public void setCategoriaID(String categoriaID) {
-        this.categoriaID = categoriaID;
-    }
+    public void setCategoriaID(String categoriaID) { this.categoriaID = categoriaID; }
 
-    public void setProductoID(String productoID) {
-        this.productoID = productoID;
-    }
+    public void setProductoID(String productoID) { this.productoID = productoID; }
 
-    public void setVegano(Boolean vegano) {
-        this.vegano = vegano;
-    }
+    public void setVegano(Boolean vegano) { this.vegano = vegano; }
 
     static public Marca findMarca(String nombre) {
         for (int b = 0; b < listaMarca.size(); b++) {
