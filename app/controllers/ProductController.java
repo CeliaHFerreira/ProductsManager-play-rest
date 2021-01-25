@@ -7,6 +7,7 @@ import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
 import play.twirl.api.Content;
+import views.xml.producto;
 import views.xml.productos;
 
 /**
@@ -20,9 +21,9 @@ public class ProductController extends Controller {
             if (request.accepts("application/json")) {
                 JsonNode jsonFindProducto = play.libs.Json.toJson(productTofind);
                 return ok(jsonFindProducto).as("application/json");
-            }  else if (request.accepts("application/xml")) {
-                Content content = productos.render(productTofind);
-                return Results.ok(content);
+            } else if (request.accepts("application/xml")) {
+                Content content = producto.render(productTofind);
+                return Results.ok(content).as("application/xml");
             }
         } else {
             return Results.notFound();
@@ -31,7 +32,7 @@ public class ProductController extends Controller {
     }
 
     public Result putProductItem(Http.Request request, String name) {
-        //to do content-negotiation update ids
+        //to do update ids
         JsonNode json = request.body().asJson();
         Producto productTofind = Producto.findProducto(name);
         if (productTofind != null) {
@@ -40,23 +41,34 @@ public class ProductController extends Controller {
             productTofind.setAptoCG(json.get("aptcg").asBoolean());
             productTofind.setPVP(json.get("pvp").asDouble());
             productTofind.setHNR(json.get("hnr").asText());
-            JsonNode productUpdated = play.libs.Json.toJson(productTofind);
-            return ok(productUpdated).as("application/json");
+            if (request.accepts("application/json")) {
+                JsonNode productUpdated = play.libs.Json.toJson(productTofind);
+                return ok(productUpdated).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = producto.render(productTofind);
+                return Results.ok(content).as("application/xml");
+            }
         } else {
             return Results.notFound();
         }
+        return status(406);
     }
 
-    public Result deleteProductItem(String name) {
-        //to do content-negotiation
+    public Result deleteProductItem(Http.Request request, String name) {
         Producto productTofind = Producto.findProducto(name);
         if (productTofind != null) {
             Producto.listaProducto.remove(productTofind);
-            JsonNode jsonProducto = play.libs.Json.toJson(Producto.listaProducto);
-            return ok(jsonProducto).as("application/json");
+            if (request.accepts("application/json")) {
+                JsonNode jsonProducto = play.libs.Json.toJson(Producto.listaProducto);
+                return ok(jsonProducto).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = productos.render(Producto.listaProducto);
+                return Results.ok(content).as("application/xml");
+            }
         } else {
             return Results.notFound();
         }
+        return status(406);
     }
 
 }

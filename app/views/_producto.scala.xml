@@ -1,0 +1,9 @@
+@(product: Producto)
+<producto>
+    <nombre>@product.getNombre</nombre>
+    <productoID>@product.getProductoID</productoID>
+    <vegano>@product.getVegano</vegano>
+    <aptoCuryGirl>@product.getAptoCG</aptoCuryGirl>
+    <PVP>@product.getPVP</PVP>
+    <HNR>@product.getHNR</HNR>
+</producto>

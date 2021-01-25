@@ -9,6 +9,7 @@ import play.mvc.Result;
 import play.mvc.Results;
 import play.twirl.api.Content;
 import views.xml.marca;
+import views.xml.marcas;
 
 /**
  * BrandController
@@ -23,7 +24,7 @@ public class BrandController extends Controller {
                 return ok(jsonFindMarca).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = marca.render(brandTofind);
-                return Results.ok(content);
+                return Results.ok(content).as("application/xml");
             }
         } else {
             return Results.notFound();
@@ -32,7 +33,7 @@ public class BrandController extends Controller {
     }
 
     public Result putBrandItem(Http.Request request, String name) {
-        //to do content-negotiation update ids
+        //to do update ids
         JsonNode json = request.body().asJson();
         Marca brandTofind = Marca.findMarca(name);
         Marcas brandInBrands = Marcas.findMarca(name);
@@ -40,25 +41,36 @@ public class BrandController extends Controller {
             brandTofind.setNombre(json.get("nombre").asText());
             brandTofind.setVegano(json.get("vegano").asBoolean());
             brandInBrands.setNombre(json.get("nombre").asText());
-            JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
-            return ok(brandUpdated).as("application/json");
+            if (request.accepts("application/json")) {
+                JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
+                return ok(brandUpdated).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = marca.render(brandTofind);
+                return Results.ok(content).as("application/xml");
+            }
         } else {
             return Results.notFound();
         }
+        return status(406);
     }
 
-    public Result deleteBrandItem(String name) {
-        //to do content-negotiation
+    public Result deleteBrandItem(Http.Request request, String name) {
         Marca brandTofind = Marca.findMarca(name);
         Marcas brandInBrands = Marcas.findMarca(name);
         if (brandTofind != null) {
             Marcas.listaMarcas.remove(brandInBrands);
             Marca.listaMarca.remove(brandTofind);
-            JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
-            return ok(jsonMarcas).as("application/json");
+            if (request.accepts("application/json")) {
+                JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
+                return ok(jsonMarcas).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = marcas.render(Marcas.listaMarcas);
+                return Results.ok(content).as("application/xml");
+            }
         } else {
             return Results.notFound();
         }
+        return status(406);
     }
 
 }

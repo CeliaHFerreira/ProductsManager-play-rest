@@ -29,7 +29,7 @@ public class HomeController extends Controller {
         } else if (request.accepts("application/xml")) {
             Content content = categorias.render(Categoria.listaCategoria);
             if (Categoria.listaCategoria.size() != 0) {
-                return Results.ok(content);
+                return Results.ok(content).as("application/xml");
             } else {
                 return Results.notFound();
             }
@@ -38,14 +38,15 @@ public class HomeController extends Controller {
     }
 
     public Result postManager(Http.Request request) {
+        JsonNode json = request.body().asJson();
+        Categoria category = new Categoria(json.get("nombre").asText(), json.get("categoriaid").asText(), null, null);
+        Categoria.listaCategoria.add(category);
         if(request.accepts("application/json")) {
-            JsonNode json = request.body().asJson();
-            Categoria category = new Categoria(json.get("nombre").asText(), json.get("categoriaid").asText(), null, null);
-            Categoria.listaCategoria.add(category);
             JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.listaCategoria);
             return ok(jsonCategorias).as("application/json");
         } else if (request.accepts("application/xml")) {
-            // to do
+            Content content = categorias.render(Categoria.listaCategoria);
+            return Results.ok(content).as("application/xml");
         }
         return status(406);
     }

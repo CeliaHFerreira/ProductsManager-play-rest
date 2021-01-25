@@ -27,7 +27,7 @@ public class BrandsController extends Controller {
         } else if (request.accepts("application/xml")) {
             Content content = marcas.render(Marcas.listaMarcas);
             if (Marcas.listaMarcas.size() != 0) {
-                return Results.ok(content);
+                return Results.ok(content).as("application/xml");
             } else {
                 return Results.notFound();
             }
@@ -36,14 +36,20 @@ public class BrandsController extends Controller {
     }
 
     public Result postBrands(Http.Request request) {
-        // TO DO: content-negotiation and not repeat brand update ids
+        // TO DO: not repeat brand and update ids
         JsonNode json = request.body().asJson();
         Marcas brands = new Marcas(json.get("marcaid").asText(), json.get("nombre").asText());
         Marca brand = new Marca(json.get("marcaid").asText(), json.get("nombre").asText(), null, null, null);
         Marcas.listaMarcas.add(brands);
         Marca.listaMarca.add(brand);
-        JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
-        return ok(jsonMarcas).as("application/json");
+        if(request.accepts("application/json")) {
+            JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
+            return ok(jsonMarcas).as("application/json");
+        } else if (request.accepts("application/xml")) {
+            Content content = marcas.render(Marcas.listaMarcas);
+            return Results.ok(content).as("application/xml");
+        }
+        return Results.status(406);
     }
 
 }
