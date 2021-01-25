@@ -1,0 +1,11 @@
+@(categories: List[Categoria])
+<?xml version="1.0" encoding="utf-8" ?>
+<marcas>/marcas</marcas>
+<categorias>
+@for(c <- categories) {
+    <categoria>
+        <nombre>@c.getNombre()</nombre>
+        <categoriaID>@c.getCategoriaID()</categoriaID>
+    </categoria>
+}
+</categorias>

@@ -1,0 +1,10 @@
+@(product: Producto)
+<?xml version="1.0" encoding="utf-8" ?>
+<categoria>
+    <nombre>@product.getNombre</nombre>
+    <productoID>@product.getProductoID</productoID>
+    <vegano>@product.getVegano</vegano>
+    <aptoCuryGirl>@product.getAptoCG</aptoCuryGirl>
+    <PVP>@product.getPVP</PVP>
+    <HNR>@product.getHNR</HNR>
+</categoria>

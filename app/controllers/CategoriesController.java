@@ -7,21 +7,28 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
+import play.twirl.api.Content;
+import views.xml.categoria;
 
 /**
  * Categories controller
  */
 public class CategoriesController extends Controller {
 
-    public Result getCategorie(String name) {
-        //to do content-negotiation
+    public Result getCategorie(Http.Request request, String name) {
         Categoria categorieTofind = Categoria.findCategoria(name);
         if (categorieTofind != null) {
-            JsonNode jsonFindCategoria = play.libs.Json.toJson(categorieTofind);
-            return ok(jsonFindCategoria).as("application/json");
+            if (request.accepts("application/json")) {
+                JsonNode jsonFindCategoria = play.libs.Json.toJson(categorieTofind);
+                return ok(jsonFindCategoria).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = categoria.render(categorieTofind);
+                return Results.ok(content);
+            }
         } else {
             return Results.notFound();
         }
+        return status(406);
     }
 
     public Result postCategorie(Http.Request request, String name) {

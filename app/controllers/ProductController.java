@@ -6,21 +6,28 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
+import play.twirl.api.Content;
+import views.xml.productos;
 
 /**
  * Product Controller
  */
 public class ProductController extends Controller {
 
-    public Result getProductItem(String name) {
-        //to do content-negotiation
+    public Result getProductItem(Http.Request request, String name) {
         Producto productTofind = Producto.findProducto(name);
         if (productTofind != null) {
-            JsonNode jsonFindProducto = play.libs.Json.toJson(productTofind);
-            return ok(jsonFindProducto).as("application/json");
+            if (request.accepts("application/json")) {
+                JsonNode jsonFindProducto = play.libs.Json.toJson(productTofind);
+                return ok(jsonFindProducto).as("application/json");
+            }  else if (request.accepts("application/xml")) {
+                Content content = productos.render(productTofind);
+                return Results.ok(content);
+            }
         } else {
             return Results.notFound();
         }
+        return status(406);
     }
 
     public Result putProductItem(Http.Request request, String name) {

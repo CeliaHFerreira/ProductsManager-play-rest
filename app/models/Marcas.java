@@ -6,7 +6,6 @@ public class Marcas {
     String nombre;
     String marcaID;
 
-
     public Marcas(String marcaID, String nombre) {
         this.nombre = nombre;
         this.marcaID = marcaID;

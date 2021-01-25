@@ -1,0 +1,10 @@
+@(brands: List[Marcas])
+<?xml version="1.0" encoding="utf-8" ?>
+<marcas>
+@for(b <- brands) {
+    <marca>
+        <nombre>@b.getNombre()</nombre>
+        <marcaID>@b.getMarcaID()</marcaID>
+    </marca>
+}
+</marcas>
