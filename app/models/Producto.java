@@ -12,16 +12,6 @@ public class Producto {
     Double PVP;
     String HNR;
 
-    public Producto(String nombre, String productoID, String marcaID, String categoriaID, Boolean vegano, Boolean aptoCG, Double PVP, String HNR) {
-        this.nombre = nombre;
-        this.productoID = productoID;
-        this.marcaID = marcaID;
-        this.categoriaID = categoriaID;
-        this.vegano = vegano;
-        this.aptoCG = aptoCG;
-        this.PVP = PVP;
-        this.HNR = HNR;
-    }
     static public ArrayList<Producto> listaProducto = new ArrayList<Producto>();
 
     public String getNombre() {

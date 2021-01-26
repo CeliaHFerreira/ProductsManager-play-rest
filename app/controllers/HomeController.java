@@ -3,13 +3,21 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Categoria;
+import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.*;
 import play.twirl.api.Content;
 import views.xml.categorias;
+
+import javax.inject.Inject;
+
 /**
  * HomeController
  */
 public class HomeController extends Controller {
+
+    @Inject
+    FormFactory formfactory;
 
     public Result index() {
         return ok(views.html.index.render());
@@ -39,7 +47,8 @@ public class HomeController extends Controller {
 
     public Result postManager(Http.Request request) {
         JsonNode json = request.body().asJson();
-        Categoria category = new Categoria(json.get("nombre").asText(), json.get("categoriaid").asText(), null, null);
+        Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
+        Categoria category = c.get();
         Categoria.listaCategoria.add(category);
         if(request.accepts("application/json")) {
             JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.listaCategoria);

@@ -6,11 +6,6 @@ public class Marcas {
     String nombre;
     String marcaID;
 
-    public Marcas(String marcaID, String nombre) {
-        this.nombre = nombre;
-        this.marcaID = marcaID;
-    }
-
     static public ArrayList<Marcas> listaMarcas = new ArrayList<Marcas>();
 
     public String getMarcaID() {

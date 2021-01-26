@@ -3,6 +3,8 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Categoria;
 import models.Producto;
+import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -12,10 +14,15 @@ import views.xml.categoria;
 import views.xml.categorias;
 import views.xml.productos;
 
+import javax.inject.Inject;
+
 /**
  * Categories controller
  */
 public class CategoriesController extends Controller {
+
+    @Inject
+    FormFactory formfactory;
 
     public Result getCategorie(Http.Request request, String name) {
         Categoria categorieTofind = Categoria.findCategoria(name);
@@ -37,11 +44,12 @@ public class CategoriesController extends Controller {
         // TO DO: update ids
         JsonNode json = request.body().asJson();
         Categoria categorieTofind = Categoria.findCategoria(name);
+        Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
+        Producto product = p.get();
+        product.setMarcaID(categorieTofind.getCategoriaID());
         if (categorieTofind == null) {
             return Results.notFound();
         }
-        Producto product = new Producto(json.get("nombre").asText(), json.get("productoid").asText(),
-                null, categorieTofind.getCategoriaID(), json.get("vegano").asBoolean(), json.get("aptocg").asBoolean(), json.get("PVP").asDouble(), json.get("HNR").asText());
         Producto.listaProducto.add(product);
         if (request.accepts("application/json")) {
             JsonNode jsonProductos = play.libs.Json.toJson(Producto.listaProducto);

@@ -8,12 +8,6 @@ public class Categoria {
     String productoID;
     String marcaID;
 
-    public Categoria(String nombre, String categoriaID, String productoID, String marcaID) {
-        this.nombre = nombre;
-        this.categoriaID = categoriaID;
-        this.productoID = productoID;
-        this.marcaID = marcaID;
-    }
 
     static public ArrayList<Categoria> listaCategoria = new ArrayList<Categoria>();
 

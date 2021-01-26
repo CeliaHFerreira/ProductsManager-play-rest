@@ -9,14 +9,6 @@ public class Marca {
     String productoID;
     Boolean vegano;
 
-    public Marca(String marcaID, String nombre, String categoriaID, String productoID, Boolean vegano) {
-        this.nombre = nombre;
-        this.marcaID = marcaID;
-        this.categoriaID = categoriaID;
-        this.productoID = productoID;
-        this.vegano = vegano;
-    }
-
     static public ArrayList<Marca> listaMarca = new ArrayList<Marca>();
 
     public String getNombre() { return nombre; }

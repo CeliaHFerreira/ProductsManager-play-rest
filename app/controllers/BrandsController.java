@@ -1,9 +1,10 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import models.Categoria;
 import models.Marca;
 import models.Marcas;
+import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -11,10 +12,15 @@ import play.mvc.Results;
 import play.twirl.api.Content;
 import views.xml.marcas;
 
+import javax.inject.Inject;
+
 /**
  * BrandsController
  */
 public class BrandsController extends Controller {
+
+    @Inject
+    FormFactory formfactory;
 
     public Result getBrands(Http.Request request) {
         if(request.accepts("application/json")) {
@@ -38,8 +44,10 @@ public class BrandsController extends Controller {
     public Result postBrands(Http.Request request) {
         // TO DO: not repeat brand and update ids
         JsonNode json = request.body().asJson();
-        Marcas brands = new Marcas(json.get("marcaid").asText(), json.get("nombre").asText());
-        Marca brand = new Marca(json.get("marcaid").asText(), json.get("nombre").asText(), null, null, null);
+        Form<Marca> b = formfactory.form(Marca.class).bindFromRequest(request);
+        Marca brand = b.get();
+        Form<Marcas> bs = formfactory.form(Marcas.class).bindFromRequest(request);
+        Marcas brands = bs.get();
         Marcas.listaMarcas.add(brands);
         Marca.listaMarca.add(brand);
         if(request.accepts("application/json")) {
