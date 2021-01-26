@@ -42,7 +42,6 @@ public class CategoriesController extends Controller {
 
     public Result postCategorie(Http.Request request, String name) {
         // TO DO: update ids
-        JsonNode json = request.body().asJson();
         Categoria categorieTofind = Categoria.findCategoria(name);
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         Producto product = p.get();
@@ -63,10 +62,11 @@ public class CategoriesController extends Controller {
 
     public Result putCategorie(Http.Request request, String name) {
         //to do update ids
-        JsonNode json = request.body().asJson();
+        Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
+        Categoria categorie = c.get();
         Categoria categorieTofind = Categoria.findCategoria(name);
         if (categorieTofind != null) {
-            categorieTofind.setNombre(json.get("nombre").asText());
+            categorieTofind.setNombre(categorie.getNombre());
             if (request.accepts("application/json")) {
                 JsonNode cataegorieUpdated = play.libs.Json.toJson(categorieTofind);
                 return ok(cataegorieUpdated).as("application/json");

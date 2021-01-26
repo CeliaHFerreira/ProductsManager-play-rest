@@ -43,7 +43,6 @@ public class BrandsController extends Controller {
 
     public Result postBrands(Http.Request request) {
         // TO DO: not repeat brand and update ids
-        JsonNode json = request.body().asJson();
         Form<Marca> b = formfactory.form(Marca.class).bindFromRequest(request);
         Marca brand = b.get();
         Form<Marcas> bs = formfactory.form(Marcas.class).bindFromRequest(request);

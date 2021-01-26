@@ -3,6 +3,8 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Marca;
 import models.Marcas;
+import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -11,10 +13,15 @@ import play.twirl.api.Content;
 import views.xml.marca;
 import views.xml.marcas;
 
+import javax.inject.Inject;
+
 /**
  * BrandController
  */
 public class BrandController extends Controller {
+
+    @Inject
+    FormFactory formfactory;
 
     public Result getBrandItem(Http.Request request, String name) {
         Marca brandTofind = Marca.findMarca(name);
@@ -34,13 +41,14 @@ public class BrandController extends Controller {
 
     public Result putBrandItem(Http.Request request, String name) {
         //to do update ids
-        JsonNode json = request.body().asJson();
+        Form<Marca> m = formfactory.form(Marca.class).bindFromRequest(request);
+        Marca brand = m.get();
         Marca brandTofind = Marca.findMarca(name);
         Marcas brandInBrands = Marcas.findMarca(name);
         if (brandTofind != null) {
-            brandTofind.setNombre(json.get("nombre").asText());
-            brandTofind.setVegano(json.get("vegano").asBoolean());
-            brandInBrands.setNombre(json.get("nombre").asText());
+            brandTofind.setNombre(brand.getNombre());
+            brandTofind.setVegano(brand.getVegano());
+            brandInBrands.setNombre(brand.getNombre());
             if (request.accepts("application/json")) {
                 JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
                 return ok(brandUpdated).as("application/json");

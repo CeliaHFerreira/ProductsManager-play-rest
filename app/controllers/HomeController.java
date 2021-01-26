@@ -46,7 +46,6 @@ public class HomeController extends Controller {
     }
 
     public Result postManager(Http.Request request) {
-        JsonNode json = request.body().asJson();
         Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
         Categoria category = c.get();
         Categoria.listaCategoria.add(category);

@@ -2,6 +2,8 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Producto;
+import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -10,11 +12,14 @@ import play.twirl.api.Content;
 import views.xml.producto;
 import views.xml.productos;
 
+import javax.inject.Inject;
+
 /**
  * Product Controller
  */
 public class ProductController extends Controller {
-
+    @Inject
+    FormFactory formfactory;
     public Result getProductItem(Http.Request request, String name) {
         Producto productTofind = Producto.findProducto(name);
         if (productTofind != null) {
@@ -33,14 +38,15 @@ public class ProductController extends Controller {
 
     public Result putProductItem(Http.Request request, String name) {
         //to do update ids
-        JsonNode json = request.body().asJson();
+        Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
+        Producto product = p.get();
         Producto productTofind = Producto.findProducto(name);
         if (productTofind != null) {
-            productTofind.setNombre(json.get("nombre").asText());
-            productTofind.setVegano(json.get("vegano").asBoolean());
-            productTofind.setAptoCG(json.get("aptcg").asBoolean());
-            productTofind.setPVP(json.get("pvp").asDouble());
-            productTofind.setHNR(json.get("hnr").asText());
+            productTofind.setNombre(product.getNombre());
+            productTofind.setVegano(product.getVegano());
+            productTofind.setAptoCG(product.getAptoCG());
+            productTofind.setPVP(product.getPVP());
+            productTofind.setHNR(product.getHNR());
             if (request.accepts("application/json")) {
                 JsonNode productUpdated = play.libs.Json.toJson(productTofind);
                 return ok(productUpdated).as("application/json");
