@@ -1,7 +1,7 @@
 @(product: Producto)
 <producto>
     <nombre>@product.getNombre</nombre>
-    <productoID>@product.getProductoID</productoID>
+    <productoID>@product.getId</productoID>
     <vegano>@product.getVegano</vegano>
     <aptoCuryGirl>@product.getAptoCG</aptoCuryGirl>
     <PVP>@product.getPVP</PVP>

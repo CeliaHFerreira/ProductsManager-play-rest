@@ -34,8 +34,8 @@ public class BrandsController extends Controller {
                 return ok(jsonMarcas).as("application/json");
             }
         } else if (request.accepts("application/xml")) {
-            Content content = marcas.render(Marcas.listaMarcas);
-            if (Marcas.listaMarcas.size() != 0) {
+            Content content = marcas.render(Marcas.getListaMarcas());
+            if (Marcas.getListaMarcas().size() != 0) {
                 return Results.ok(content).as("application/xml");
             } else {
                 return Results.notFound();

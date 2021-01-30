@@ -2,5 +2,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <categoria>
     <nombre>@categoria.getNombre</nombre>
-    <marcaID>@categoria.getCategoriaID</marcaID>
+    <marcaID>@categoria.getId</marcaID>
 </categoria>

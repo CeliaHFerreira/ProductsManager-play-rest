@@ -2,6 +2,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <marca>
     <nombre>@brand.getNombre</nombre>
-    <marcaID>@brand.getMarcaID</marcaID>
+    <marcaID>@brand.getId</marcaID>
     <vegano>@brand.getVegano</vegano>
 </marca>

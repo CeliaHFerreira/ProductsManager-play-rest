@@ -5,7 +5,7 @@
 @for(c <- categories) {
     <categoria>
         <nombre>@c.getNombre()</nombre>
-        <categoriaID>@c.getCategoriaID()</categoriaID>
+        <categoriaID>@c.getId()</categoriaID>
     </categoria>
 }
 </categorias>

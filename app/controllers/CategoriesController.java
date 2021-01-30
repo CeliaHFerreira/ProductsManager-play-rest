@@ -41,7 +41,6 @@ public class CategoriesController extends Controller {
     }
 
     public Result postCategorie(Http.Request request, String name) {
-        // TO DO: update ids
         Categoria categorieTofind = Categoria.findCategoria(name);
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         Producto product = p.get();

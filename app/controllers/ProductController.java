@@ -37,7 +37,6 @@ public class ProductController extends Controller {
     }
 
     public Result putProductItem(Http.Request request, String name) {
-        //to do update ids
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         Producto product = p.get();
         Producto productTofind = Producto.findProducto(name);

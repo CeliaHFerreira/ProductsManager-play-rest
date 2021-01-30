@@ -40,7 +40,6 @@ public class BrandController extends Controller {
     }
 
     public Result putBrandItem(Http.Request request, String name) {
-        //to do update ids
         Form<Marca> m = formfactory.form(Marca.class).bindFromRequest(request);
         Marca brand = m.get();
         Marca brandTofind = Marca.findMarca(name);

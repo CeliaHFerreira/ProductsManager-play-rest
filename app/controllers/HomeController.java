@@ -35,8 +35,8 @@ public class HomeController extends Controller {
                 return ok(result).as("application/json");
             }
         } else if (request.accepts("application/xml")) {
-            Content content = categorias.render(Categoria.listaCategoria);
-            if (Categoria.listaCategoria.size() != 0) {
+            Content content = categorias.render(Categoria.getListaCategorias());
+            if (Categoria.getListaCategorias().size() != 0) {
                 return Results.ok(content).as("application/xml");
             } else {
                 return Results.notFound();

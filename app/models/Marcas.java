@@ -14,18 +14,10 @@ import java.util.List;
 
 @Entity
 public class Marcas extends Model {
+
     public String nombre;
-    @Id
-    Long id2;
 
-    public Long getId2() {
-        return id2;
-    }
-
-    public void setId2(Long id2) {
-        this.id2 = id2;
-    }
-
+    @Id public Long Id;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="marcaID")
     public List<Marca> marcaID;
@@ -33,6 +25,10 @@ public class Marcas extends Model {
 
     static public ArrayList<Marcas> listaMarcas = new ArrayList<Marcas>();
 
+
+    public Long getId() {
+        return Id;
+    }
     public List getMarcaID() {
         return marcaID;
     }
@@ -40,12 +36,16 @@ public class Marcas extends Model {
         return nombre;
     }
 
+    public void setId(Long Id) {
+        this.Id = Id;
+    }
     public void setMarcaID(List marcaID) {
         this.marcaID = marcaID;
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
 
     public static final Finder<Long,Marcas> find = new Finder<>(Marcas.class);
 
