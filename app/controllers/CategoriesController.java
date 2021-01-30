@@ -45,16 +45,17 @@ public class CategoriesController extends Controller {
         Categoria categorieTofind = Categoria.findCategoria(name);
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         Producto product = p.get();
-        product.setMarcaID(categorieTofind.getCategoriaID());
+        //product.setMarcaID(categorieTofind.getCategoriaID());
         if (categorieTofind == null) {
             return Results.notFound();
         }
-        Producto.listaProducto.add(product);
+        product.save();
+        //Producto.listaProducto.add(product);
         if (request.accepts("application/json")) {
             JsonNode jsonProductos = play.libs.Json.toJson(Producto.listaProducto);
             return ok(jsonProductos).as("application/json");
         } else if (request.accepts("application/xml")) {
-            Content content = productos.render(Producto.listaProducto);
+            Content content = productos.render(Producto.getListaProductos());
             return Results.ok(content).as("application/xml");
         }
         return status(406);

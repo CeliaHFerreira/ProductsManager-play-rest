@@ -44,7 +44,7 @@ public class BrandController extends Controller {
         Form<Marca> m = formfactory.form(Marca.class).bindFromRequest(request);
         Marca brand = m.get();
         Marca brandTofind = Marca.findMarca(name);
-        Marcas brandInBrands = Marcas.findMarca(name);
+        Marcas brandInBrands = Marcas.findByNombre(name);
         if (brandTofind != null) {
             brandTofind.setNombre(brand.getNombre());
             brandTofind.setVegano(brand.getVegano());
@@ -64,7 +64,7 @@ public class BrandController extends Controller {
 
     public Result deleteBrandItem(Http.Request request, String name) {
         Marca brandTofind = Marca.findMarca(name);
-        Marcas brandInBrands = Marcas.findMarca(name);
+        Marcas brandInBrands = Marcas.findByNombre(name);
         if (brandTofind != null) {
             Marcas.listaMarcas.remove(brandInBrands);
             Marca.listaMarca.remove(brandTofind);

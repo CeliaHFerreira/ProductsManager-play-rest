@@ -1,19 +1,26 @@
 package models;
 
+import io.ebean.Finder;
+import io.ebean.Model;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Categoria {
+@Entity
+public class Categoria extends Model {
     String nombre;
-    String categoriaID;
-    String productoID;
-    String marcaID;
 
-    public Categoria() {
-        this.nombre = nombre;
-        this.categoriaID = categoriaID;
-        this.productoID = productoID;
-        this.marcaID = marcaID;
-    }
+    @Id
+    Long categoriaID;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    public List<Producto> productoID = new ArrayList<Producto>();
+
+    String marcaID;
 
     static public ArrayList<Categoria> listaCategoria = new ArrayList<Categoria>();
 
@@ -21,9 +28,9 @@ public class Categoria {
         return nombre;
     }
 
-    public String getCategoriaID() { return categoriaID; }
+    public Long getCategoriaID() { return categoriaID; }
 
-    public String getProductoID() {
+    public List getProductoID() {
         return productoID;
     }
 
@@ -35,11 +42,11 @@ public class Categoria {
         this.nombre = nombre;
     }
 
-    public void setCategoriaID(String categoriaID) {
+    public void setCategoriaID(Long categoriaID) {
         this.categoriaID = categoriaID;
     }
 
-    public void setProductoID(String productoID) {
+    public void setProductoID(List productoID) {
         this.productoID = productoID;
     }
 
@@ -47,12 +54,20 @@ public class Categoria {
         this.marcaID = marcaID;
     }
 
+    public static final Finder<Long,Categoria> find = new Finder<>(Categoria.class);
+
     static public Categoria findCategoria(String nombre) {
-        for (int c = 0; c < listaCategoria.size(); c++) {
-            if (Categoria.listaCategoria.get(c).getNombre().equals(nombre)) {
-                return Categoria.listaCategoria.get(c);
-            }
-        }
-        return null;
+        return find.query().where().eq("nombre", nombre).findOne();
     }
+
+    static public List<Categoria> getListaCategorias() {
+        return find.query().findList();
+    }
+
+    /*public void addProducto(Producto p, Categoria c) {
+        this.productoID.add(p);
+        p.categoriaID = p.setCategoriaSeleccionada(c);
+    }
+
+     */
 }
