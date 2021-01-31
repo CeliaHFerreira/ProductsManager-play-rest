@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
+import play.data.validation.Constraints;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ import java.util.List;
 @Entity
 public class Marcas extends Model {
 
+    @Constraints.Required(message = "Nombre de la marca es obligatorio")
+    @Constraints.MinLength(value = 2, message = "El nombre de la marca no puede ser tan corto")
     public String nombre;
 
     @Id public Long Id;
@@ -51,6 +54,10 @@ public class Marcas extends Model {
 
     static public Marcas findByNombre(String nombre) {
         return find.query().where().eq("nombre", nombre).findOne();
+    }
+
+    static public Marcas findById(Long id) {
+        return find.query().where().eq("Id", id).findOne();
     }
 
     static public List<Marcas> getListaMarcas() {

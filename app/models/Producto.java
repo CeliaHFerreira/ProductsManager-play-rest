@@ -2,6 +2,7 @@ package models;
 
 import io.ebean.Finder;
 import io.ebean.Model;
+import play.data.validation.Constraints;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +14,9 @@ import java.util.Set;
 
 @Entity
 public class Producto extends Model {
+
+    @Constraints.Required(message = "Nombre del producto es obligatorio")
+    @Constraints.MinLength(value = 2, message = "El nombre del producto no puede ser tan corto")
     public String nombre;
 
     @Id public Long id;
@@ -25,8 +29,14 @@ public class Producto extends Model {
 
     public Boolean vegano;
     public Boolean aptoCG;
+
+    @Constraints.Min(value = 1, message = "El valor mínimo de un producto es 1€")
     public Double PVP;
+
+    @Constraints.ValidateWith(HNRValidation.class)
     public String HNR;
+
+    @Constraints.Required(message = "Nombre de la marca del producto es obligatorio")
     public String nombreMarca;
 
 
@@ -56,8 +66,12 @@ public class Producto extends Model {
 
     public static final Finder<Long,Producto> find = new Finder<>(Producto.class);
 
-    static public Producto findProducto(String nombre) {
+    static public Producto findProductoByNombre(String nombre) {
         return find.query().where().eq("nombre", nombre).findOne();
+    }
+
+    static public Producto findProductoById(Long id) {
+        return find.query().where().eq("Id", id).findOne();
     }
 
     static public List<Producto> getListaProductos() {
@@ -77,5 +91,6 @@ public class Producto extends Model {
     }
 
      */
+
 
 }

@@ -47,7 +47,7 @@ public class ProductController extends Controller {
         return status(406);
     }
     public Result getProductItem(Http.Request request, String name) {
-        Producto productTofind = Producto.findProducto(name);
+        Producto productTofind = Producto.findProductoByNombre(name);
         if (productTofind != null) {
             if (request.accepts("application/json")) {
                 JsonNode jsonFindProducto = play.libs.Json.toJson(productTofind);
@@ -63,35 +63,41 @@ public class ProductController extends Controller {
     }
 
     public Result putProductItem(Http.Request request, String name) {
+        //To DO uodate categorie when many to many will be correct and return JSON!
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
-        Producto product = p.get();
-        Producto productTofind = Producto.findProducto(name);
-        if (productTofind != null) {
-            productTofind.setNombre(product.getNombre());
-            productTofind.setVegano(product.getVegano());
-            productTofind.setAptoCG(product.getAptoCG());
-            productTofind.setPVP(product.getPVP());
-            productTofind.setHNR(product.getHNR());
-            productTofind.setNombreMarca(product.getNombreMarca());
-            Marca brand = Marca.findMarca(product.getNombreMarca());
-            brand.update();
-            productTofind.update();
-            if (request.accepts("application/json")) {
-                JsonNode productUpdated = play.libs.Json.toJson(productTofind);
-                return ok(productUpdated).as("application/json");
-            } else if (request.accepts("application/xml")) {
-                Content content = producto.render(productTofind);
-                return Results.ok(content).as("application/xml");
+        if (p.hasErrors()) {
+            return Results.badRequest(p.errorsAsJson());
+        }else {
+            Producto product = p.get();
+            Producto productTofind = Producto.findProductoByNombre(name);
+            if (productTofind != null) {
+                productTofind.setNombre(product.getNombre());
+                productTofind.setVegano(product.getVegano());
+                productTofind.setAptoCG(product.getAptoCG());
+                productTofind.setPVP(product.getPVP());
+                productTofind.setHNR(product.getHNR());
+                productTofind.setNombreMarca(product.getNombreMarca());
+                Marca brand = Marca.findMarcaByNombre(product.getNombreMarca());
+                brand.update();
+                productTofind.update();
+                if (request.accepts("application/json")) {
+                    JsonNode productUpdated = play.libs.Json.toJson(productTofind);
+                    return ok(productUpdated).as("application/json");
+                } else if (request.accepts("application/xml")) {
+                    Content content = producto.render(productTofind);
+                    return Results.ok(content).as("application/xml");
+                }
+            } else {
+                return Results.notFound();
             }
-        } else {
-            return Results.notFound();
         }
         return status(406);
     }
 
     public Result deleteProductItem(Http.Request request, String name) {
-        Producto productTofind = Producto.findProducto(name);
-        Marca productInBrand = Marca.findMarca(productTofind.getNombreMarca());
+        //To DO when many to many will be correct and return JSON!
+        Producto productTofind = Producto.findProductoByNombre(name);
+        Marca productInBrand = Marca.findMarcaByNombre(productTofind.getNombreMarca());
         if (productTofind != null) {
             productInBrand.deleteProducto(productTofind);
             productTofind.delete();
@@ -112,7 +118,7 @@ public class ProductController extends Controller {
 
     public Result getProductListBrand(Http.Request request, String name) {
         // TO DO: return JSON!
-        Marca marcaTofind = Marca.findMarca(name);
+        Marca marcaTofind = Marca.findMarcaByNombre(name);
         if (marcaTofind != null) {
             if (request.accepts("application/json")) {
                 //TO DO

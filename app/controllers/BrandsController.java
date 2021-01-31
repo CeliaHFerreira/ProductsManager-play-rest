@@ -48,30 +48,34 @@ public class BrandsController extends Controller {
     public Result postBrands(Http.Request request) {
         // TO DO: return JSON!
         Form<Marca> b = formfactory.form(Marca.class).bindFromRequest(request);
-        Marca brand = b.get();
         Form<Marcas> bs = formfactory.form(Marcas.class).bindFromRequest(request);
-        Marcas brands = bs.get();
-        Marca brandRepeated = Marca.findMarca(brand.getNombre());
-        if (brandRepeated != null) {
-            return Results.badRequest("La marca ya existe en el servidor");
+        if (b.hasErrors() || bs.hasErrors()) {
+            return Results.badRequest(b.errorsAsJson());
         } else {
-            brands.addMarca(brand);
-            brands.save();
-            if (request.accepts("application/json")) {
-                //JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
+            Marca brand = b.get();
+            Marcas brands = bs.get();
+            Marca brandRepeated = Marca.findMarcaByNombre(brand.getNombre());
+            if (brandRepeated != null) {
+                return Results.badRequest("La marca ya existe en el servidor");
+            } else {
+                brands.addMarca(brand);
+                brands.save();
+                if (request.accepts("application/json")) {
+                    //JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
             /*for (Marcas item : Marcas.getListaMarcas()) {
                 Marcas.listaMarcas.add(item);
             }*/
-                System.out.println(Marcas.listaMarcas);
+                    System.out.println(Marcas.listaMarcas);
 
-                JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
-                //System.out.println(play.libs.Json.toJson(item));
+                    JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
+                    //System.out.println(play.libs.Json.toJson(item));
 
-                //System.out.println(jsonMarcas);
-                return ok(jsonMarcas).as("application/json");
-            } else if (request.accepts("application/xml")) {
-                Content content = marcas.render(Marcas.getListaMarcas());
-                return Results.ok(content).as("application/xml");
+                    //System.out.println(jsonMarcas);
+                    return ok(jsonMarcas).as("application/json");
+                } else if (request.accepts("application/xml")) {
+                    Content content = marcas.render(Marcas.getListaMarcas());
+                    return Results.ok(content).as("application/xml");
+                }
             }
         }
         return Results.status(406);

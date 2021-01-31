@@ -6,4 +6,5 @@
     <aptoCuryGirl>@product.getAptoCG</aptoCuryGirl>
     <PVP>@product.getPVP</PVP>
     <HNR>@product.getHNR</HNR>
+    <Marca>@product.getNombreMarca</Marca>
 </producto>
