@@ -36,11 +36,14 @@ DELETE      /marca/categoria                controllers.CategoriesController.del
 GET         /marca/producto                 controllers.ProductController.getProductItem(request: Request, name: String)
 PUT         /marca/producto                 controllers.ProductController.putProductItem(request: Request, name: String)
 DELETE      /marca/producto                 controllers.ProductController.deleteProductItem(request: Request, name: String)
+GET         /marca/producto/list            controllers.ProductController.getProductListBrand(request: Request, name: String)
+GET         /marca/listaproducto            controllers.ProductController.getProducts(request: Request)
 
 # Routes producto desde categoria
 GET         /categoria/producto             controllers.ProductController.getProductItem(request: Request, name: String)
 PUT         /categoria/producto             controllers.ProductController.putProductItem(request: Request, name: String)
 DELETE      /categoria/producto             controllers.ProductController.deleteProductItem(request: Request, name: String)
+GET         /categoria/listaproducto        controllers.ProductController.getProducts(request: Request)
 
 
 

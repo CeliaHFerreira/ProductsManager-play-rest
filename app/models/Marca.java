@@ -16,11 +16,11 @@ public class Marca extends Model {
     @Id public Long Id;
 
     @ManyToOne
-    public Marcas marcaID;
+    public Marcas marcasID;
 
     public String categoriaID;
 
-    @OneToMany(cascade= CascadeType.ALL, mappedBy="productoID")
+    @OneToMany(cascade= CascadeType.ALL, mappedBy="marcaID")
     public List<Producto> productoID;
 
     public Boolean vegano;
@@ -31,12 +31,12 @@ public class Marca extends Model {
 
     public String getNombre() { return nombre; }
     public Long getId() { return Id; }
-    public Marcas getMarcaID() { return marcaID; }
+    public Marcas getMarcaID() { return marcasID; }
     public String getCategoriaID() {  return categoriaID; }
     public List getProductoID() {  return productoID;  }
     public Boolean getVegano() { return vegano; }
 
-    public void setMarcaID(Marcas marcaID) { this.marcaID = marcaID; }
+    public void setMarcaID(Marcas marcaID) { this.marcasID = marcaID; }
     public void setId(Long id) { Id = id; }
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setCategoriaID(String categoriaID) { this.categoriaID = categoriaID; }
@@ -51,4 +51,12 @@ public class Marca extends Model {
         return find.query().where().eq("nombre", nombre).findOne();
     }
 
+
+    public void addProducto(Producto p) {
+        this.productoID.add(p);
+        p.marcaID = this;
+    }
+    public void deleteProducto(Producto p) {
+        this.productoID.remove(p);
+    }
 }

@@ -20,7 +20,7 @@ create table categoria_producto (
 create table marca (
   id                            bigint auto_increment not null,
   nombre                        varchar(255),
-  marca_id_id                   bigint,
+  marcas_id_id                  bigint,
   categoria_id                  varchar(255),
   vegano                        boolean,
   constraint pk_marca primary key (id)
@@ -35,12 +35,12 @@ create table marcas (
 create table producto (
   id                            bigint auto_increment not null,
   nombre                        varchar(255),
-  producto_id_id                bigint,
-  marca_id                      varchar(255),
+  marca_id_id                   bigint,
   vegano                        boolean,
   apto_cg                       boolean,
   pvp                           double,
   hnr                           varchar(255),
+  nombre_marca                  varchar(255),
   constraint pk_producto primary key (id)
 );
 
@@ -50,11 +50,11 @@ alter table categoria_producto add constraint fk_categoria_producto_categoria fo
 create index ix_categoria_producto_producto on categoria_producto (producto_id);
 alter table categoria_producto add constraint fk_categoria_producto_producto foreign key (producto_id) references producto (id) on delete restrict on update restrict;
 
-create index ix_marca_marca_id_id on marca (marca_id_id);
-alter table marca add constraint fk_marca_marca_id_id foreign key (marca_id_id) references marcas (id) on delete restrict on update restrict;
+create index ix_marca_marcas_id_id on marca (marcas_id_id);
+alter table marca add constraint fk_marca_marcas_id_id foreign key (marcas_id_id) references marcas (id) on delete restrict on update restrict;
 
-create index ix_producto_producto_id_id on producto (producto_id_id);
-alter table producto add constraint fk_producto_producto_id_id foreign key (producto_id_id) references marca (id) on delete restrict on update restrict;
+create index ix_producto_marca_id_id on producto (marca_id_id);
+alter table producto add constraint fk_producto_marca_id_id foreign key (marca_id_id) references marca (id) on delete restrict on update restrict;
 
 
 # --- !Downs
@@ -65,11 +65,11 @@ drop index if exists ix_categoria_producto_categoria;
 alter table categoria_producto drop constraint if exists fk_categoria_producto_producto;
 drop index if exists ix_categoria_producto_producto;
 
-alter table marca drop constraint if exists fk_marca_marca_id_id;
-drop index if exists ix_marca_marca_id_id;
+alter table marca drop constraint if exists fk_marca_marcas_id_id;
+drop index if exists ix_marca_marcas_id_id;
 
-alter table producto drop constraint if exists fk_producto_producto_id_id;
-drop index if exists ix_producto_producto_id_id;
+alter table producto drop constraint if exists fk_producto_marca_id_id;
+drop index if exists ix_producto_marca_id_id;
 
 drop table if exists categoria;
 

@@ -24,6 +24,7 @@ public class HomeController extends Controller {
     }
 
     public Result getManager(Http.Request request) {
+        // TO DO: return JSON!
         if(request.accepts("application/json")) {
             JsonNode jsonRest = play.libs.Json.toJson(Categoria.listaCategoria);
             if (jsonRest.size() == 0) {
@@ -46,17 +47,23 @@ public class HomeController extends Controller {
     }
 
     public Result postManager(Http.Request request) {
+        // TO DO: return JSON!
         Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
         Categoria category = c.get();
-        category.save();
-        if(request.accepts("application/json")) {
-            /*JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.listaCategoria);
-            return ok(jsonCategorias).as("application/json");
-             */
-            return ok().as("application/json");
-        } else if (request.accepts("application/xml")) {
-            Content content = categorias.render(Categoria.getListaCategorias());
-            return Results.ok(content).as("application/xml");
+        Categoria categoryRepeated = Categoria.findCategoria(category.getNombre());
+        if (categoryRepeated != null ) {
+            return Results.badRequest("La categoria ya existe en el servidor");
+        } else {
+            category.save();
+            if(request.accepts("application/json")) {
+                /*JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.listaCategoria);
+                return ok(jsonCategorias).as("application/json");
+                 */
+                return ok().as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = categorias.render(Categoria.getListaCategorias());
+                return Results.ok(content).as("application/xml");
+            }
         }
         return status(406);
     }

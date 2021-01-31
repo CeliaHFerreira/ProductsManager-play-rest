@@ -37,11 +37,9 @@ public class Categoria extends Model {
     public String getMarcaID() {
         return marcaID;
     }
-
     public Long getId() { return Id; }
 
     public void setId(Long id) { Id = id; }
-
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setCategoriaID(Long categoriaID) { this.categoriaID = categoriaID;}
     public void setProductoID(List productoID) { this.productoID = productoID; }

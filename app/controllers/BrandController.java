@@ -24,6 +24,7 @@ public class BrandController extends Controller {
     FormFactory formfactory;
 
     public Result getBrandItem(Http.Request request, String name) {
+        // TO DO: return JSON!
         Marca brandTofind = Marca.findMarca(name);
         if (brandTofind != null) {
             if (request.accepts("application/json")) {
@@ -40,6 +41,7 @@ public class BrandController extends Controller {
     }
 
     public Result putBrandItem(Http.Request request, String name) {
+        // TO DO: return JSON!
         Form<Marca> m = formfactory.form(Marca.class).bindFromRequest(request);
         Marca brand = m.get();
         Marca brandTofind = Marca.findMarca(name);
@@ -48,6 +50,8 @@ public class BrandController extends Controller {
             brandTofind.setNombre(brand.getNombre());
             brandTofind.setVegano(brand.getVegano());
             brandInBrands.setNombre(brand.getNombre());
+            brandInBrands.update();
+            brandTofind.update();
             if (request.accepts("application/json")) {
                 JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
                 return ok(brandUpdated).as("application/json");
@@ -62,11 +66,12 @@ public class BrandController extends Controller {
     }
 
     public Result deleteBrandItem(Http.Request request, String name) {
+        // TO DO: return JSON!
         Marca brandTofind = Marca.findMarca(name);
         Marcas brandInBrands = Marcas.findByNombre(name);
         if (brandTofind != null) {
-            Marcas.listaMarcas.remove(brandInBrands);
-            Marca.listaMarca.remove(brandTofind);
+            brandInBrands.deleteMarca(brandTofind);
+            brandTofind.delete();
             if (request.accepts("application/json")) {
                 JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
                 return ok(jsonMarcas).as("application/json");

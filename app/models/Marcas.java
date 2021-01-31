@@ -19,7 +19,7 @@ public class Marcas extends Model {
 
     @Id public Long Id;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="marcaID")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="marcasID")
     public List<Marca> marcaID;
 
 
@@ -59,6 +59,12 @@ public class Marcas extends Model {
 
     public void addMarca(Marca m) {
         this.marcaID.add(m);
-        m.marcaID = this;
+        m.marcasID = this;
+    }
+    public void updateMarca(Marca m) {
+        this.marcaID.add(m);
+    }
+    public void deleteMarca(Marca m) {
+        this.marcaID.remove(m);
     }
 }

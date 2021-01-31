@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Categoria;
+import models.Marca;
 import models.Producto;
 import play.data.Form;
 import play.data.FormFactory;
@@ -15,6 +16,7 @@ import views.xml.categorias;
 import views.xml.productos;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Categories controller
@@ -25,13 +27,15 @@ public class CategoriesController extends Controller {
     FormFactory formfactory;
 
     public Result getCategorie(Http.Request request, String name) {
+        // TO DO: return JSON! and correct response, now return all the products
         Categoria categorieTofind = Categoria.findCategoria(name);
         if (categorieTofind != null) {
             if (request.accepts("application/json")) {
                 JsonNode jsonFindCategoria = play.libs.Json.toJson(categorieTofind);
                 return ok(jsonFindCategoria).as("application/json");
             } else if (request.accepts("application/xml")) {
-                Content content = categoria.render(categorieTofind);
+                List<Producto> productList = Producto.getListaProductosCategoria(categorieTofind.getCategoriaID());
+                Content content = productos.render(productList);
                 return Results.ok(content).as("application/xml");
             }
         } else {
@@ -41,27 +45,34 @@ public class CategoriesController extends Controller {
     }
 
     public Result postCategorie(Http.Request request, String name) {
+        // TO DO: return JSON!
         Categoria categorieTofind = Categoria.findCategoria(name);
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         Producto product = p.get();
+        Producto productRepeated = Producto.findProducto(product.getNombre());
         //product.setMarcaID(categorieTofind.getCategoriaID());
-        if (categorieTofind == null) {
-            return Results.notFound();
-        }
-        product.save();
-        //Producto.listaProducto.add(product);
-        if (request.accepts("application/json")) {
-            JsonNode jsonProductos = play.libs.Json.toJson(Producto.listaProducto);
-            return ok(jsonProductos).as("application/json");
-        } else if (request.accepts("application/xml")) {
-            Content content = productos.render(Producto.getListaProductos());
-            return Results.ok(content).as("application/xml");
+        if (productRepeated != null) {
+            return Results.badRequest("El producto ya existe en el servidor");
+        } else {
+            if (categorieTofind == null) {
+                return Results.notFound();
+            }
+            Marca brand = Marca.findMarca(product.getNombreMarca());
+            brand.addProducto(product);
+            product.save();
+            if (request.accepts("application/json")) {
+                JsonNode jsonProductos = play.libs.Json.toJson(Producto.listaProducto);
+                return ok(jsonProductos).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = productos.render(Producto.getListaProductos());
+                return Results.ok(content).as("application/xml");
+            }
         }
         return status(406);
     }
 
     public Result putCategorie(Http.Request request, String name) {
-        //to do update ids
+        // TO DO: return JSON!
         Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
         Categoria categorie = c.get();
         Categoria categorieTofind = Categoria.findCategoria(name);
@@ -81,9 +92,11 @@ public class CategoriesController extends Controller {
     }
 
     public Result deleteCategorie(Http.Request request, String name) {
+        // TO DO: return JSON!
         Categoria categorieTofind = Categoria.findCategoria(name);
         if (categorieTofind != null) {
-            Categoria.listaCategoria.remove(categorieTofind);
+            //Categoria.listaCategoria.remove(categorieTofind);
+            categorieTofind.delete();
             if (request.accepts("application/json")) {
                 JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.listaCategoria);
                 return ok(jsonCategorias).as("application/json");
@@ -96,5 +109,4 @@ public class CategoriesController extends Controller {
         }
         return status(406);
     }
-
 }
