@@ -26,15 +26,16 @@ public class HomeController extends Controller {
     public Result getManager(Http.Request request) {
         // TO DO: return JSON!
         if(request.accepts("application/json")) {
-            JsonNode jsonRest = play.libs.Json.toJson(Categoria.listaCategoria);
+            //NOT WORK
+            /*JsonNode jsonRest = play.libs.Json.toJson(Categoria.listaCategoria);
             if (jsonRest.size() == 0) {
                 return Results.notFound();
             } else {
                 ObjectNode result = play.libs.Json.newObject();
                 result.put("brands", "/marcas");
                 result.set("categories", jsonRest);
-                return ok(result).as("application/json");
-            }
+                return ok().as("application/json");
+            }*/
         } else if (request.accepts("application/xml")) {
             Content content = categorias.render(Categoria.getListaCategorias());
             if (Categoria.getListaCategorias().size() != 0) {

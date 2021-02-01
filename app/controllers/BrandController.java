@@ -28,8 +28,8 @@ public class BrandController extends Controller {
         Marca brandTofind = Marca.findMarcaByNombre(name);
         if (brandTofind != null) {
             if (request.accepts("application/json")) {
-                JsonNode jsonFindMarca = play.libs.Json.toJson(brandTofind);
-                return ok(jsonFindMarca).as("application/json");
+                //JsonNode jsonFindMarca = play.libs.Json.toJson(brandTofind);
+                return ok().as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = marca.render(brandTofind);
                 return Results.ok(content).as("application/xml");
@@ -56,8 +56,8 @@ public class BrandController extends Controller {
                 brandInBrands.update();
                 brandTofind.update();
                 if (request.accepts("application/json")) {
-                    JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
-                    return ok(brandUpdated).as("application/json");
+                    //JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
+                    return ok().as("application/json");
                 } else if (request.accepts("application/xml")) {
                     Content content = marca.render(brandTofind);
                     return Results.ok(content).as("application/xml");
@@ -77,8 +77,8 @@ public class BrandController extends Controller {
             brandInBrands.deleteMarca(brandTofind);
             brandTofind.delete();
             if (request.accepts("application/json")) {
-                JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
-                return ok(jsonMarcas).as("application/json");
+                //JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
+                return ok().as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = marcas.render(Marcas.listaMarcas);
                 return Results.ok(content).as("application/xml");

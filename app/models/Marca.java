@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties(value = {"_ebean_intercept"})
 public class Marca extends Model {
 
     @Constraints.Required(message = "Nombre de la marca es obligatorio")
@@ -63,6 +64,7 @@ public class Marca extends Model {
         this.productoID.add(p);
         p.marcaID = this;
     }
+
     public void deleteProducto(Producto p) {
         this.productoID.remove(p);
     }

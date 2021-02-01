@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
 import play.data.validation.Constraints;
@@ -9,10 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties(value = {"_ebean_intercept"})
 public class Producto extends Model {
 
     @Constraints.Required(message = "Nombre del producto es obligatorio")
@@ -25,7 +28,7 @@ public class Producto extends Model {
     public Marca marcaID;
 
     @ManyToMany(mappedBy = "productoID")
-    public Set<Categoria> categoriaID;
+    public Set<Categoria> categoriaID = new HashSet<Categoria>();
 
     public Boolean vegano;
     public Boolean aptoCG;

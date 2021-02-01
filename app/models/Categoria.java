@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
 import org.checkerframework.common.aliasing.qual.Unique;
@@ -10,9 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties(value = {"_ebean_intercept"})
 public class Categoria extends Model {
     @Constraints.Required(message = "Nombre de la categoria es obligatorio")
     public String nombre;
@@ -23,7 +27,7 @@ public class Categoria extends Model {
     public Long categoriaID;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    public List<Producto> productoID = new ArrayList<Producto>();
+    public Set<Producto> productoID = new HashSet<Producto>();
 
     //Falta esta many to many
     public String marcaID;
@@ -36,7 +40,7 @@ public class Categoria extends Model {
         return nombre;
     }
     public Long getCategoriaID() { return categoriaID; }
-    public List getProductoID() {
+    public Set getProductoID() {
         return productoID;
     }
     public String getMarcaID() {
@@ -47,7 +51,7 @@ public class Categoria extends Model {
     public void setId(Long id) { Id = id; }
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setCategoriaID(Long categoriaID) { this.categoriaID = categoriaID;}
-    public void setProductoID(List productoID) { this.productoID = productoID; }
+    public void setProductoID(Set productoID) { this.productoID = productoID; }
     public void setMarcaID(String marcaID) { this.marcaID = marcaID; }
 
 
@@ -65,10 +69,13 @@ public class Categoria extends Model {
         return find.query().findList();
     }
 
-    /*public void addProducto(Producto p, Categoria c) {
+    //MANY TO MANY WORKINGGGGGGG
+    public void addProductoToCategory(Producto p) {
         this.productoID.add(p);
-        p.categoriaID = p.setCategoriaSeleccionada(c);
+        p.getCategoriaID().add(this);
     }
-
-     */
+    public void removeProductoToCategory(Producto p) {
+        this.productoID.remove(p);
+        p.getCategoriaID().remove(this);
+    }
 }

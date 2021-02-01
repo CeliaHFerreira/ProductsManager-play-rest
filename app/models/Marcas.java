@@ -2,6 +2,7 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.ebean.Finder;
 import io.ebean.Model;
 import play.data.validation.Constraints;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties(value = {"_ebean_intercept"})
 public class Marcas extends Model {
 
     @Constraints.Required(message = "Nombre de la marca es obligatorio")
@@ -22,6 +24,7 @@ public class Marcas extends Model {
 
     @Id public Long Id;
 
+    @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="marcasID")
     public List<Marca> marcaID;
 

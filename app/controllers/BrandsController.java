@@ -1,6 +1,8 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import models.Marca;
 import models.Marcas;
 import org.h2.util.json.JSONArray;
@@ -27,19 +29,19 @@ public class BrandsController extends Controller {
 
     public Result getBrands(Http.Request request) {
         // TO DO: return JSON!
-        if(request.accepts("application/json")) {
-            JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
-            if (jsonMarcas.size() == 0) {
-                return Results.notFound();
-            } else {
+        if (Marcas.getListaMarcas().size() == 0) {
+            return Results.notFound();
+        } else {
+            if (request.accepts("application/json")) {
+                JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
                 return ok(jsonMarcas).as("application/json");
-            }
-        } else if (request.accepts("application/xml")) {
-            Content content = marcas.render(Marcas.getListaMarcas());
-            if (Marcas.getListaMarcas().size() != 0) {
-                return Results.ok(content).as("application/xml");
-            } else {
-                return Results.notFound();
+            } else if (request.accepts("application/xml")) {
+                Content content = marcas.render(Marcas.getListaMarcas());
+                if (Marcas.getListaMarcas().size() != 0) {
+                    return Results.ok(content).as("application/xml");
+                } else {
+                    return Results.notFound();
+                }
             }
         }
         return Results.status(406);
@@ -65,13 +67,12 @@ public class BrandsController extends Controller {
             /*for (Marcas item : Marcas.getListaMarcas()) {
                 Marcas.listaMarcas.add(item);
             }*/
-                    System.out.println(Marcas.listaMarcas);
 
-                    JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
+                    //JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
                     //System.out.println(play.libs.Json.toJson(item));
 
                     //System.out.println(jsonMarcas);
-                    return ok(jsonMarcas).as("application/json");
+                    return ok().as("application/json");
                 } else if (request.accepts("application/xml")) {
                     Content content = marcas.render(Marcas.getListaMarcas());
                     return Results.ok(content).as("application/xml");
