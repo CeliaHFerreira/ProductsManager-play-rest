@@ -31,9 +31,8 @@ public class ProductController extends Controller {
             return Results.notFound();
         } else {
             if (request.accepts("application/json")) {
-                //JsonNode jsonRest = play.libs.Json.toJson(Producto.getListaProductos());
-                ObjectNode result = play.libs.Json.newObject();
-                return ok().as("application/json");
+                JsonNode jsonRest = play.libs.Json.toJson(Producto.getListaProductos());
+                return ok(jsonRest).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = productos.render(Producto.getListaProductos());
                 if (Producto.getListaProductos().size() != 0) {
@@ -49,8 +48,8 @@ public class ProductController extends Controller {
         Producto productTofind = Producto.findProductoByNombre(name);
         if (productTofind != null) {
             if (request.accepts("application/json")) {
-                //JsonNode jsonFindProducto = play.libs.Json.toJson(productTofind);
-                return ok().as("application/json");
+                JsonNode jsonFindProducto = play.libs.Json.toJson(productTofind);
+                return ok(jsonFindProducto).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = producto.render(productTofind);
                 return Results.ok(content).as("application/xml");
@@ -62,7 +61,7 @@ public class ProductController extends Controller {
     }
 
     public Result putProductItem(Http.Request request, String name) {
-        //To DO uodate categorie when many to many will be correct and return JSON!
+        //To DO uodate categorie when many to many will be correct
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         if (p.hasErrors()) {
             return Results.badRequest(p.errorsAsJson());
@@ -80,8 +79,8 @@ public class ProductController extends Controller {
                 brand.update();
                 productTofind.update();
                 if (request.accepts("application/json")) {
-                    //JsonNode productUpdated = play.libs.Json.toJson(productTofind);
-                    return ok().as("application/json");
+                    JsonNode productUpdated = play.libs.Json.toJson(productTofind);
+                    return ok(productUpdated).as("application/json");
                 } else if (request.accepts("application/xml")) {
                     Content content = producto.render(productTofind);
                     return Results.ok(content).as("application/xml");
@@ -94,18 +93,18 @@ public class ProductController extends Controller {
     }
 
     public Result deleteProductItem(Http.Request request, String name) {
-        //To DO when many to many will be correct and return JSON!
+        //To DO when many to many will be correct
         Producto productTofind = Producto.findProductoByNombre(name);
         Marca productInBrand = Marca.findMarcaByNombre(productTofind.getNombreMarca());
         if (productTofind != null) {
             productInBrand.deleteProducto(productTofind);
             productTofind.delete();
-            Producto.listaProducto.remove(productTofind);
+            Producto.getListaProductos().remove(productTofind);
             if (request.accepts("application/json")) {
-                //JsonNode jsonProducto = play.libs.Json.toJson(Producto.listaProducto);
-                return ok().as("application/json");
+                JsonNode jsonProducto = play.libs.Json.toJson(Producto.getListaProductos());
+                return ok(jsonProducto).as("application/json");
             } else if (request.accepts("application/xml")) {
-                Content content = productos.render(Producto.listaProducto);
+                Content content = productos.render(Producto.getListaProductos());
                 return Results.ok(content).as("application/xml");
             }
         } else {

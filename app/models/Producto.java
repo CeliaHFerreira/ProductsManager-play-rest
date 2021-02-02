@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
@@ -24,9 +25,11 @@ public class Producto extends Model {
 
     @Id public Long id;
 
+    @JsonIgnore
     @ManyToOne
     public Marca marcaID;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "productoID")
     public Set<Categoria> categoriaID = new HashSet<Categoria>();
 
@@ -41,9 +44,6 @@ public class Producto extends Model {
 
     @Constraints.Required(message = "Nombre de la marca del producto es obligatorio")
     public String nombreMarca;
-
-
-    static public ArrayList<Producto> listaProducto = new ArrayList<Producto>();
 
 
     public Long getId() { return id; }

@@ -24,12 +24,11 @@ public class BrandController extends Controller {
     FormFactory formfactory;
 
     public Result getBrandItem(Http.Request request, String name) {
-        // TO DO: return JSON!
         Marca brandTofind = Marca.findMarcaByNombre(name);
         if (brandTofind != null) {
             if (request.accepts("application/json")) {
-                //JsonNode jsonFindMarca = play.libs.Json.toJson(brandTofind);
-                return ok().as("application/json");
+                JsonNode jsonFindMarca = play.libs.Json.toJson(brandTofind);
+                return ok(jsonFindMarca).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = marca.render(brandTofind);
                 return Results.ok(content).as("application/xml");
@@ -41,7 +40,6 @@ public class BrandController extends Controller {
     }
 
     public Result putBrandItem(Http.Request request, String name) {
-        // TO DO: return JSON!
         Form<Marca> m = formfactory.form(Marca.class).bindFromRequest(request);
         if(m.hasErrors()) {
             return Results.badRequest(m.errorsAsJson());
@@ -56,8 +54,8 @@ public class BrandController extends Controller {
                 brandInBrands.update();
                 brandTofind.update();
                 if (request.accepts("application/json")) {
-                    //JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
-                    return ok().as("application/json");
+                    JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
+                    return ok(brandUpdated).as("application/json");
                 } else if (request.accepts("application/xml")) {
                     Content content = marca.render(brandTofind);
                     return Results.ok(content).as("application/xml");
@@ -70,17 +68,16 @@ public class BrandController extends Controller {
     }
 
     public Result deleteBrandItem(Http.Request request, String name) {
-        // TO DO: return JSON!
         Marca brandTofind = Marca.findMarcaByNombre(name);
         Marcas brandInBrands = Marcas.findByNombre(name);
         if (brandTofind != null) {
             brandInBrands.deleteMarca(brandTofind);
             brandTofind.delete();
             if (request.accepts("application/json")) {
-                //JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.listaMarcas);
-                return ok().as("application/json");
+                JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
+                return ok(jsonMarcas).as("application/json");
             } else if (request.accepts("application/xml")) {
-                Content content = marcas.render(Marcas.listaMarcas);
+                Content content = marcas.render(Marcas.getListaMarcas());
                 return Results.ok(content).as("application/xml");
             }
         } else {

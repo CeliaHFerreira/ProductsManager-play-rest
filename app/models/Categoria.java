@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
@@ -10,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,14 +26,13 @@ public class Categoria extends Model {
 
     public Long categoriaID;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     public Set<Producto> productoID = new HashSet<Producto>();
 
-    //Falta esta many to many
-    public String marcaID;
-
-
-    static public ArrayList<Categoria> listaCategoria = new ArrayList<Categoria>();
+    @JsonIgnore
+    @ManyToMany(mappedBy = "categoriaID")
+    public Set<Marca> marcaID = new HashSet<Marca>();
 
 
     public String getNombre() {
@@ -43,7 +42,7 @@ public class Categoria extends Model {
     public Set getProductoID() {
         return productoID;
     }
-    public String getMarcaID() {
+    public Set getMarcaID() {
         return marcaID;
     }
     public Long getId() { return Id; }
@@ -52,7 +51,7 @@ public class Categoria extends Model {
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setCategoriaID(Long categoriaID) { this.categoriaID = categoriaID;}
     public void setProductoID(Set productoID) { this.productoID = productoID; }
-    public void setMarcaID(String marcaID) { this.marcaID = marcaID; }
+    public void setMarcaID(Set marcaID) { this.marcaID = marcaID; }
 
 
     public static final Finder<Long,Categoria> find = new Finder<>(Categoria.class);
@@ -69,7 +68,6 @@ public class Categoria extends Model {
         return find.query().findList();
     }
 
-    //MANY TO MANY WORKINGGGGGGG
     public void addProductoToCategory(Producto p) {
         this.productoID.add(p);
         p.getCategoriaID().add(this);

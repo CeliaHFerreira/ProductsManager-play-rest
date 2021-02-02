@@ -24,18 +24,16 @@ public class HomeController extends Controller {
     }
 
     public Result getManager(Http.Request request) {
-        // TO DO: return JSON!
         if(request.accepts("application/json")) {
-            //NOT WORK
-            /*JsonNode jsonRest = play.libs.Json.toJson(Categoria.listaCategoria);
+            JsonNode jsonRest = play.libs.Json.toJson(Categoria.getListaCategorias());
             if (jsonRest.size() == 0) {
                 return Results.notFound();
             } else {
                 ObjectNode result = play.libs.Json.newObject();
                 result.put("brands", "/marcas");
                 result.set("categories", jsonRest);
-                return ok().as("application/json");
-            }*/
+                return ok(result).as("application/json");
+            }
         } else if (request.accepts("application/xml")) {
             Content content = categorias.render(Categoria.getListaCategorias());
             if (Categoria.getListaCategorias().size() != 0) {
@@ -48,7 +46,6 @@ public class HomeController extends Controller {
     }
 
     public Result postManager(Http.Request request) {
-        // TO DO: return JSON!
         Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
         if (c.hasErrors()) {
                 return Results.badRequest(c.errorsAsJson());
@@ -60,10 +57,8 @@ public class HomeController extends Controller {
             } else {
                 category.save();
                 if (request.accepts("application/json")) {
-                /*JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.listaCategoria);
-                return ok(jsonCategorias).as("application/json");
-                 */
-                    return ok().as("application/json");
+                    JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.getListaCategorias());
+                    return ok(jsonCategorias).as("application/json");
                 } else if (request.accepts("application/xml")) {
                     Content content = categorias.render(Categoria.getListaCategorias());
                     return Results.ok(content).as("application/xml");

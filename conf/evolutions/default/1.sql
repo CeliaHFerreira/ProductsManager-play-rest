@@ -7,7 +7,6 @@ create table categoria (
   id                            bigint auto_increment not null,
   nombre                        varchar(255),
   categoria_id                  bigint,
-  marca_id                      varchar(255),
   constraint pk_categoria primary key (id)
 );
 
@@ -21,9 +20,14 @@ create table marca (
   id                            bigint auto_increment not null,
   nombre                        varchar(255),
   marcas_id_id                  bigint,
-  categoria_id                  varchar(255),
   vegano                        boolean,
   constraint pk_marca primary key (id)
+);
+
+create table marca_categoria (
+  marca_id                      bigint not null,
+  categoria_id                  bigint not null,
+  constraint pk_marca_categoria primary key (marca_id,categoria_id)
 );
 
 create table marcas (
@@ -53,6 +57,12 @@ alter table categoria_producto add constraint fk_categoria_producto_producto for
 create index ix_marca_marcas_id_id on marca (marcas_id_id);
 alter table marca add constraint fk_marca_marcas_id_id foreign key (marcas_id_id) references marcas (id) on delete restrict on update restrict;
 
+create index ix_marca_categoria_marca on marca_categoria (marca_id);
+alter table marca_categoria add constraint fk_marca_categoria_marca foreign key (marca_id) references marca (id) on delete restrict on update restrict;
+
+create index ix_marca_categoria_categoria on marca_categoria (categoria_id);
+alter table marca_categoria add constraint fk_marca_categoria_categoria foreign key (categoria_id) references categoria (id) on delete restrict on update restrict;
+
 create index ix_producto_marca_id_id on producto (marca_id_id);
 alter table producto add constraint fk_producto_marca_id_id foreign key (marca_id_id) references marca (id) on delete restrict on update restrict;
 
@@ -68,6 +78,12 @@ drop index if exists ix_categoria_producto_producto;
 alter table marca drop constraint if exists fk_marca_marcas_id_id;
 drop index if exists ix_marca_marcas_id_id;
 
+alter table marca_categoria drop constraint if exists fk_marca_categoria_marca;
+drop index if exists ix_marca_categoria_marca;
+
+alter table marca_categoria drop constraint if exists fk_marca_categoria_categoria;
+drop index if exists ix_marca_categoria_categoria;
+
 alter table producto drop constraint if exists fk_producto_marca_id_id;
 drop index if exists ix_producto_marca_id_id;
 
@@ -76,6 +92,8 @@ drop table if exists categoria;
 drop table if exists categoria_producto;
 
 drop table if exists marca;
+
+drop table if exists marca_categoria;
 
 drop table if exists marcas;
 

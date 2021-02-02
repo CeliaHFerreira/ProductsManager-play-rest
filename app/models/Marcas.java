@@ -2,7 +2,6 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.ebean.Finder;
 import io.ebean.Model;
 import play.data.validation.Constraints;
@@ -27,9 +26,6 @@ public class Marcas extends Model {
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="marcasID")
     public List<Marca> marcaID;
-
-
-    static public ArrayList<Marcas> listaMarcas = new ArrayList<Marcas>();
 
 
     public Long getId() {

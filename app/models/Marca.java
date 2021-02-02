@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
@@ -7,7 +8,9 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties(value = {"_ebean_intercept"})
@@ -19,32 +22,31 @@ public class Marca extends Model {
 
     @Id public Long Id;
 
+    @JsonIgnore
     @ManyToOne
     public Marcas marcasID;
 
-    //Falta many to many
-    public String categoriaID;
+    @ManyToMany(cascade = CascadeType.ALL)
+    public Set<Categoria> categoriaID = new HashSet<Categoria>();
 
+    @JsonIgnore
     @OneToMany(cascade= CascadeType.ALL, mappedBy="marcaID")
     public List<Producto> productoID;
 
     public Boolean vegano;
 
 
-    static public ArrayList<Marca> listaMarca = new ArrayList<Marca>();
-
-
     public String getNombre() { return nombre; }
     public Long getId() { return Id; }
     public Marcas getMarcaID() { return marcasID; }
-    public String getCategoriaID() {  return categoriaID; }
+    public Set getCategoriaID() {  return categoriaID; }
     public List getProductoID() {  return productoID;  }
     public Boolean getVegano() { return vegano; }
 
     public void setMarcaID(Marcas marcaID) { this.marcasID = marcaID; }
     public void setId(Long id) { Id = id; }
     public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setCategoriaID(String categoriaID) { this.categoriaID = categoriaID; }
+    public void setCategoriaID(Set categoriaID) { this.categoriaID = categoriaID; }
     public void setProductoID(List productoID) { this.productoID = productoID; }
     public void setVegano(Boolean vegano) { this.vegano = vegano; }
 
@@ -67,5 +69,14 @@ public class Marca extends Model {
 
     public void deleteProducto(Producto p) {
         this.productoID.remove(p);
+    }
+
+    public void addCategoryToBrand(Categoria c) {
+        this.categoriaID.add(c);
+        c.getMarcaID().add(this);
+    }
+    public void removeCategoryToBrand(Categoria c) {
+        this.categoriaID.remove(c);
+        c.getMarcaID().remove(this);
     }
 }
