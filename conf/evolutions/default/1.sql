@@ -6,7 +6,6 @@
 create table categoria (
   id                            bigint auto_increment not null,
   nombre                        varchar(255),
-  categoria_id                  bigint,
   constraint pk_categoria primary key (id)
 );
 
@@ -14,6 +13,12 @@ create table categoria_producto (
   categoria_id                  bigint not null,
   producto_id                   bigint not null,
   constraint pk_categoria_producto primary key (categoria_id,producto_id)
+);
+
+create table codigo (
+  id                            bigint auto_increment not null,
+  codigo_barras                 bigint,
+  constraint pk_codigo primary key (id)
 );
 
 create table marca (
@@ -45,6 +50,8 @@ create table producto (
   pvp                           double,
   hnr                           varchar(255),
   nombre_marca                  varchar(255),
+  id_codigo_barras_id           bigint,
+  constraint uq_producto_id_codigo_barras_id unique (id_codigo_barras_id),
   constraint pk_producto primary key (id)
 );
 
@@ -65,6 +72,8 @@ alter table marca_categoria add constraint fk_marca_categoria_categoria foreign 
 
 create index ix_producto_marca_id_id on producto (marca_id_id);
 alter table producto add constraint fk_producto_marca_id_id foreign key (marca_id_id) references marca (id) on delete restrict on update restrict;
+
+alter table producto add constraint fk_producto_id_codigo_barras_id foreign key (id_codigo_barras_id) references codigo (id) on delete restrict on update restrict;
 
 
 # --- !Downs
@@ -87,9 +96,13 @@ drop index if exists ix_marca_categoria_categoria;
 alter table producto drop constraint if exists fk_producto_marca_id_id;
 drop index if exists ix_producto_marca_id_id;
 
+alter table producto drop constraint if exists fk_producto_id_codigo_barras_id;
+
 drop table if exists categoria;
 
 drop table if exists categoria_producto;
+
+drop table if exists codigo;
 
 drop table if exists marca;
 

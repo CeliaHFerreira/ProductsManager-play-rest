@@ -39,49 +39,56 @@ public class BrandController extends Controller {
         return status(406);
     }
 
-    public Result putBrandItem(Http.Request request, String name) {
+    public Result putBrandItem(Http.Request request) {
         Form<Marca> m = formfactory.form(Marca.class).bindFromRequest(request);
         if(m.hasErrors()) {
             return Results.badRequest(m.errorsAsJson());
         } else {
             Marca brand = m.get();
-            Marca brandTofind = Marca.findMarcaByNombre(name);
-            Marcas brandInBrands = Marcas.findByNombre(name);
+            Marca brandTofind = Marca.findMarcaByNombre(brand.getNombre());
+            Marcas brandInBrands = Marcas.findById(brandTofind.getId());
+                if (brandTofind != null) {
+                    brandTofind.setNombre(brand.getNombre());
+                    brandTofind.setVegano(brand.getVegano());
+                    brandInBrands.setNombre(brand.getNombre());
+                    brandInBrands.update();
+                    brandTofind.update();
+                    if (request.accepts("application/json")) {
+                        JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
+                        return ok(brandUpdated).as("application/json");
+                    } else if (request.accepts("application/xml")) {
+                        Content content = marca.render(brandTofind);
+                        return Results.ok(content).as("application/xml");
+                    }
+                } else {
+                    return Results.notFound();
+                }
+        }
+        return status(406);
+    }
+
+    public Result deleteBrandItem(Http.Request request) {
+        Form<Marca> m = formfactory.form(Marca.class).bindFromRequest(request);
+        if(m.hasErrors()) {
+            return Results.badRequest(m.errorsAsJson());
+        } else {
+            Marca brand = m.get();
+            Marca brandTofind = Marca.findMarcaByNombre(brand.getNombre());
+            Marcas brandInBrands = Marcas.findByNombre(brand.getNombre());
             if (brandTofind != null) {
-                brandTofind.setNombre(brand.getNombre());
-                brandTofind.setVegano(brand.getVegano());
-                brandInBrands.setNombre(brand.getNombre());
-                brandInBrands.update();
-                brandTofind.update();
+                brandInBrands.deleteMarca(brandTofind);
+                brandInBrands.delete();
+                brandTofind.delete();
                 if (request.accepts("application/json")) {
-                    JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
-                    return ok(brandUpdated).as("application/json");
+                    JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
+                    return ok(jsonMarcas).as("application/json");
                 } else if (request.accepts("application/xml")) {
-                    Content content = marca.render(brandTofind);
+                    Content content = marcas.render(Marcas.getListaMarcas());
                     return Results.ok(content).as("application/xml");
                 }
             } else {
                 return Results.notFound();
             }
-        }
-        return status(406);
-    }
-
-    public Result deleteBrandItem(Http.Request request, String name) {
-        Marca brandTofind = Marca.findMarcaByNombre(name);
-        Marcas brandInBrands = Marcas.findByNombre(name);
-        if (brandTofind != null) {
-            brandInBrands.deleteMarca(brandTofind);
-            brandTofind.delete();
-            if (request.accepts("application/json")) {
-                JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
-                return ok(jsonMarcas).as("application/json");
-            } else if (request.accepts("application/xml")) {
-                Content content = marcas.render(Marcas.getListaMarcas());
-                return Results.ok(content).as("application/xml");
-            }
-        } else {
-            return Results.notFound();
         }
         return status(406);
     }

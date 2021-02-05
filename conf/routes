@@ -14,22 +14,22 @@ POST        /marcas                         controllers.BrandsController.postBra
 
 # Routes marca
 GET         /marcas/marca                   controllers.BrandController.getBrandItem(request: Request, name: String)
-PUT         /marcas/marca                   controllers.BrandController.putBrandItem(request: Request, name: String)
-DELETE      /marcas/marca                   controllers.BrandController.deleteBrandItem(request: Request, name: String)
+PUT         /marcas/marca                   controllers.BrandController.putBrandItem(request: Request)
+DELETE      /marcas/marca                   controllers.BrandController.deleteBrandItem(request: Request)
 
 
 # Routes categoria
-GET         /categoria                      controllers.CategoriesController.getCategorie(request: Request, name: String)
-POST        /categoria                      controllers.CategoriesController.postCategorie(request: Request, name:String)
-PUT         /categoria                      controllers.CategoriesController.putCategorie(request: Request, name: String)
-DELETE      /categoria                      controllers.CategoriesController.deleteCategorie(request: Request, name: String)
+GET         /categoria                      controllers.CategoriesController.getCategory(request: Request)
+POST        /categoria                      controllers.CategoriesController.postCategory(request: Request, name:String)
+PUT         /categoria                      controllers.CategoriesController.putCategory(request: Request, name: String)
+DELETE      /categoria                      controllers.CategoriesController.deleteCategory(request: Request)
 
 
-# Routes cartegoria desde una marca
-GET         /marca/categoria                controllers.CategoriesController.getCategorie(request: Request, name: String)
-POST        /marca/categoria                controllers.CategoriesController.postCategorie(request: Request, name:String)
-PUT         /marca/categoria                controllers.CategoriesController.putCategorie(request: Request, name: String)
-DELETE      /marca/categoria                controllers.CategoriesController.deleteCategorie(request: Request, name: String)
+# Routes categoria desde una marca
+GET         /marca/categoria                controllers.CategoriesController.getCategory(request: Request)
+POST        /marca/categoria                controllers.CategoriesController.postCategory(request: Request, name:String)
+PUT         /marca/categoria                controllers.CategoriesController.putCategory(request: Request, name: String)
+DELETE      /marca/categoria                controllers.CategoriesController.deleteCategory(request: Request)
 
 
 # Routes producto desde marca

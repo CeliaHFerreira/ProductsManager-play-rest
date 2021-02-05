@@ -23,7 +23,6 @@ public class BrandsController extends Controller {
     FormFactory formfactory;
 
     public Result getBrands(Http.Request request) {
-        // TO DO: return JSON!
         if (Marcas.getListaMarcas().size() == 0) {
             return Results.notFound();
         } else {
@@ -43,7 +42,6 @@ public class BrandsController extends Controller {
     }
 
     public Result postBrands(Http.Request request) {
-        // TO DO: return JSON!
         Form<Marca> b = formfactory.form(Marca.class).bindFromRequest(request);
         Form<Marcas> bs = formfactory.form(Marcas.class).bindFromRequest(request);
         if (b.hasErrors() || bs.hasErrors()) {

@@ -26,7 +26,6 @@ public class ProductController extends Controller {
     FormFactory formfactory;
 
     public Result getProducts(Http.Request request) {
-        // TO DO: return JSON!
         if (Producto.getListaProductos().size() == 0) {
             return Results.notFound();
         } else {
@@ -44,6 +43,7 @@ public class ProductController extends Controller {
         }
         return status(406);
     }
+
     public Result getProductItem(Http.Request request, String name) {
         Producto productTofind = Producto.findProductoByNombre(name);
         if (productTofind != null) {
@@ -119,8 +119,8 @@ public class ProductController extends Controller {
         Marca marcaTofind = Marca.findMarcaByNombre(name);
         if (marcaTofind != null) {
             if (request.accepts("application/json")) {
-                //TO DO
-                return ok().as("application/json");
+                JsonNode jsonListaProductos = play.libs.Json.toJson(Producto.getListaProductosMarca(marcaTofind.getNombre()));
+                return ok(jsonListaProductos).as("application/json");
             } else if (request.accepts("application/xml")) {
                 List<Producto> productList = Producto.getListaProductosMarca(marcaTofind.getNombre());
                 if (productList != null) {

@@ -26,25 +26,29 @@ public class CategoriesController extends Controller {
     @Inject
     FormFactory formfactory;
 
-    public Result getCategorie(Http.Request request, String name) {
-        // TO DO: correct response, now return all the products
-        Categoria categoryTofind = Categoria.findCategoriaByNombre(name);
-        if (categoryTofind != null) {
-            if (request.accepts("application/json")) {
-                JsonNode jsonFindCategoria = play.libs.Json.toJson(categoryTofind);
-                return ok(jsonFindCategoria).as("application/json");
-            } else if (request.accepts("application/xml")) {
-                List<Producto> productList = Producto.getListaProductosCategoria(categoryTofind.getCategoriaID());
-                Content content = productos.render(productList);
-                return Results.ok(content).as("application/xml");
-            }
+    public Result getCategory(Http.Request request) {
+        Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
+        if (c.hasErrors()) {
+            return Results.badRequest(c.errorsAsJson());
         } else {
-            return Results.notFound();
+            Categoria category = c.get();
+            Categoria categoryTofind = Categoria.findCategoriaByNombre(category.getNombre());
+            if (categoryTofind != null) {
+                if (request.accepts("application/json")) {
+                    JsonNode jsonFindCategoria = play.libs.Json.toJson(categoryTofind);
+                    return ok(jsonFindCategoria).as("application/json");
+                } else if (request.accepts("application/xml")) {
+                    Content content = categoria.render(categoryTofind);
+                    return Results.ok(content).as("application/xml");
+                }
+            } else {
+                return Results.notFound();
+            }
         }
         return status(406);
     }
 
-    public Result postCategorie(Http.Request request, String name) {
+    public Result postCategory(Http.Request request, String name) {
         Categoria categoryTofind = Categoria.findCategoriaByNombre(name);
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         if(p.hasErrors()) {
@@ -62,7 +66,9 @@ public class CategoriesController extends Controller {
                     return Results.notFound("La marca no existe");
                 }
                 categoryTofind.addProductoToCategory(product);
+                brand.addCategoryToBrand(categoryTofind);
                 brand.addProducto(product);
+                brand.save();
                 product.save();
                 if (request.accepts("application/json")) {
                     JsonNode jsonProductos = play.libs.Json.toJson(Producto.getListaProductos());
@@ -76,20 +82,21 @@ public class CategoriesController extends Controller {
         return status(406);
     }
 
-    public Result putCategorie(Http.Request request, String name) {
+    public Result putCategory(Http.Request request, String name) {
         Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
         if (c.hasErrors()) {
             return Results.badRequest(c.errorsAsJson());
         } else {
-            Categoria categorie = c.get();
-            Categoria categorieTofind = Categoria.findCategoriaByNombre(name);
-            if (categorieTofind != null) {
-                categorieTofind.setNombre(categorie.getNombre());
+            Categoria category = c.get();
+            Categoria categoryTofind = Categoria.findCategoriaByNombre(name);
+            if (categoryTofind != null) {
+                categoryTofind.setNombre(category.getNombre());
+                categoryTofind.update();
                 if (request.accepts("application/json")) {
-                    JsonNode cataegorieUpdated = play.libs.Json.toJson(categorieTofind);
-                    return ok(cataegorieUpdated).as("application/json");
+                    JsonNode cataegoryUpdated = play.libs.Json.toJson(Categoria.findCategoriaByNombre(categoryTofind.getNombre()));
+                    return ok(cataegoryUpdated).as("application/json");
                 } else if (request.accepts("application/xml")) {
-                    Content content = categoria.render(categorieTofind);
+                    Content content = categoria.render(Categoria.findCategoriaByNombre(categoryTofind.getNombre()));
                     return Results.ok(content).as("application/xml");
                 }
             } else {
@@ -99,19 +106,25 @@ public class CategoriesController extends Controller {
         return status(406);
     }
 
-    public Result deleteCategorie(Http.Request request, String name) {
-        Categoria categorieTofind = Categoria.findCategoriaByNombre(name);
-        if (categorieTofind != null) {
-            categorieTofind.delete();
-            if (request.accepts("application/json")) {
-                JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.getListaCategorias());
-                return ok(jsonCategorias).as("application/json");
-            } else if (request.accepts("application/xml")) {
-                Content content = categorias.render(Categoria.getListaCategorias());
-                return Results.ok(content).as("application/xml");
-            }
+    public Result deleteCategory(Http.Request request) {
+        Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
+        if (c.hasErrors()) {
+            return Results.badRequest(c.errorsAsJson());
         } else {
-            return Results.notFound();
+            Categoria category = c.get();
+            Categoria categorieToDelete = Categoria.findCategoriaByNombre(category.getNombre());
+            if (categorieToDelete != null) {
+                categorieToDelete.delete();
+                if (request.accepts("application/json")) {
+                    JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.getListaCategorias());
+                    return ok(jsonCategorias).as("application/json");
+                } else if (request.accepts("application/xml")) {
+                    Content content = categorias.render(Categoria.getListaCategorias());
+                    return Results.ok(content).as("application/xml");
+                }
+            } else {
+                return Results.notFound();
+            }
         }
         return status(406);
     }

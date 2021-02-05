@@ -1,4 +1,4 @@
-package models;
+package models.Validators;
 
 import play.data.validation.Constraints;
 import play.libs.F;

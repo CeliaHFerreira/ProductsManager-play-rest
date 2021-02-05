@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
+import models.Validators.HNRValidation;
 import play.data.validation.Constraints;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +42,9 @@ public class Producto extends Model {
     @Constraints.Required(message = "Nombre de la marca del producto es obligatorio")
     public String nombreMarca;
 
+    @JsonIgnore
+    @OneToOne(cascade=CascadeType.ALL)
+    public Codigo idCodigoBarras;
 
     public Long getId() { return id; }
     public String getNombre() { return nombre; }
@@ -55,6 +55,8 @@ public class Producto extends Model {
     public Double getPVP() { return PVP; }
     public String getHNR() { return HNR; }
     public String getNombreMarca() { return nombreMarca; }
+    public Codigo getIdCodigoBarras() { return idCodigoBarras; }
+
 
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setId(Long id) { this.id = id; }
@@ -65,7 +67,7 @@ public class Producto extends Model {
     public void setPVP(Double PVP) { this.PVP = PVP; }
     public void setHNR(String HNR) { this.HNR = HNR; }
     public void setNombreMarca(String nombreMarca) { this.nombreMarca = nombreMarca; }
-
+    public void setIdCodigoBarras(Codigo idCodigoBarras) { this.idCodigoBarras = idCodigoBarras; }
 
     public static final Finder<Long,Producto> find = new Finder<>(Producto.class);
 
@@ -88,12 +90,5 @@ public class Producto extends Model {
     static public List<Producto> getListaProductosMarca(String nombreMarca) {
         return find.query().where().eq("nombreMarca", nombreMarca).findList();
     }
-
-    /*static public Set setCategoriaSeleccionada(Categoria c) {
-
-    }
-
-     */
-
 
 }

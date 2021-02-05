@@ -19,14 +19,11 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"_ebean_intercept"})
 public class Categoria extends Model {
     @Constraints.Required(message = "Nombre de la categoria es obligatorio")
-    public String nombre;
+    private String nombre;
 
     @Unique
-    @Id public Long Id;
+    @Id private Long Id;
 
-    public Long categoriaID;
-
-    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     public Set<Producto> productoID = new HashSet<Producto>();
 
@@ -38,7 +35,6 @@ public class Categoria extends Model {
     public String getNombre() {
         return nombre;
     }
-    public Long getCategoriaID() { return categoriaID; }
     public Set getProductoID() {
         return productoID;
     }
@@ -49,7 +45,6 @@ public class Categoria extends Model {
 
     public void setId(Long id) { Id = id; }
     public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setCategoriaID(Long categoriaID) { this.categoriaID = categoriaID;}
     public void setProductoID(Set productoID) { this.productoID = productoID; }
     public void setMarcaID(Set marcaID) { this.marcaID = marcaID; }
 
@@ -75,5 +70,14 @@ public class Categoria extends Model {
     public void removeProductoToCategory(Producto p) {
         this.productoID.remove(p);
         p.getCategoriaID().remove(this);
+    }
+
+    public void addMarcaToCategory(Marca m) {
+        this.marcaID.add(m);
+        m.getCategoriaID().add(this);
+    }
+    public void removeMarcaToCategory(Marca m) {
+        this.marcaID.remove(m);
+        m.getCategoriaID().remove(this);
     }
 }

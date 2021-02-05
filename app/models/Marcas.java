@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,13 +18,13 @@ public class Marcas extends Model {
 
     @Constraints.Required(message = "Nombre de la marca es obligatorio")
     @Constraints.MinLength(value = 2, message = "El nombre de la marca no puede ser tan corto")
-    public String nombre;
+    private String nombre;
 
-    @Id public Long Id;
+    @Id private Long Id;
 
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="marcasID")
-    public List<Marca> marcaID;
+    private List<Marca> marcaID;
 
 
     public Long getId() {
