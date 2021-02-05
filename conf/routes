@@ -38,14 +38,18 @@ PUT         /marca/producto                 controllers.ProductController.putPro
 DELETE      /marca/producto                 controllers.ProductController.deleteProductItem(request: Request, name: String)
 GET         /marca/producto/list            controllers.ProductController.getProductListBrand(request: Request, name: String)
 GET         /marca/listaproducto            controllers.ProductController.getProducts(request: Request)
+POST        /marca/producto/codigo          controllers.CodigoController.postCodigo(request: Request, name: String)
 
 # Routes producto desde categoria
 GET         /categoria/producto             controllers.ProductController.getProductItem(request: Request, name: String)
 PUT         /categoria/producto             controllers.ProductController.putProductItem(request: Request, name: String)
 DELETE      /categoria/producto             controllers.ProductController.deleteProductItem(request: Request, name: String)
 GET         /categoria/listaproducto        controllers.ProductController.getProducts(request: Request)
+POST        /categoria/producto/codigo      controllers.CodigoController.postCodigo(request: Request, name: String)
 
-
+#Routes codigo de barras
+GET         /marca/producto/codigo          controllers.CodigoController.getCode(request: Request)
+GET         /categoria/producto/codigo      controllers.CodigoController.getCode(request: Request)
 
 
 # Map static resources from the /public folder to the /assets URL path

@@ -43,7 +43,7 @@ public class Producto extends Model {
     public String nombreMarca;
 
     @JsonIgnore
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(mappedBy="idProducto")
     public Codigo idCodigoBarras;
 
     public Long getId() { return id; }

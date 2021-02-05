@@ -115,7 +115,6 @@ public class ProductController extends Controller {
 
 
     public Result getProductListBrand(Http.Request request, String name) {
-        // TO DO: return JSON!
         Marca marcaTofind = Marca.findMarcaByNombre(name);
         if (marcaTofind != null) {
             if (request.accepts("application/json")) {
