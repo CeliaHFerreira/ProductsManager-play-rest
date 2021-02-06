@@ -61,7 +61,7 @@ public class CodigoController {
 
     public Result putCode(Http.Request request) {
         JsonNode json = request.body().asJson();
-        Long nuevoCodigo = json.get("newCode").asLong();
+        String nuevoCodigo = json.get("newCode").asText();
         Long viejoCodigo = json.get("oldCode").asLong();
         Codigo codeToUpdate = Codigo.findCodigoById(viejoCodigo);
         if (codeToUpdate != null) {

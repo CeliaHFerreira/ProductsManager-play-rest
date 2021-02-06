@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
+import models.Validators.CodeValidation;
+import models.Validators.HNRValidation;
 import play.data.validation.Constraints;
 
 import javax.persistence.CascadeType;
@@ -17,7 +19,8 @@ import java.util.List;
 public class Codigo extends Model {
 
     @Constraints.Required(message = "El código de barras del producto es obligatorio")
-    public Long codigoBarras;
+    @Constraints.ValidateWith(CodeValidation.class)
+    public String codigoBarras;
 
     @Id
     public Long id;
@@ -26,12 +29,12 @@ public class Codigo extends Model {
     @OneToOne(cascade= CascadeType.ALL)
     public Producto idProducto;
 
-    public Long getCodigoBarras() { return codigoBarras; }
+    public String getCodigoBarras() { return codigoBarras; }
     public Long getId() {  return id; }
     public Producto getIdProducto() { return idProducto; }
 
 
-    public void setCodigoBarras(Long codigoBarras) { this.codigoBarras = codigoBarras; }
+    public void setCodigoBarras(String codigoBarras) { this.codigoBarras = codigoBarras; }
     public void setId(Long id) { this.id = id; }
     public void setIdProducto(Producto idProducto) { this.idProducto = idProducto; }
 

@@ -17,7 +17,7 @@ create table categoria_producto (
 
 create table codigo (
   id                            bigint auto_increment not null,
-  codigo_barras                 bigint,
+  codigo_barras                 varchar(255),
   id_producto_id                bigint,
   constraint uq_codigo_id_producto_id unique (id_producto_id),
   constraint pk_codigo primary key (id)
