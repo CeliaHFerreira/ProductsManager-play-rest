@@ -38,6 +38,10 @@ public class Codigo extends Model {
 
     public static final Finder<Long,Codigo> find = new Finder<>(Codigo.class);
 
+    static public Codigo findCodigoByCode(Long code) {
+        return find.query().where().eq("CodigoBarras", code).findOne();
+    }
+
     static public Codigo findCodigoById(Long id) {
         return find.query().where().eq("ID", id).findOne();
     }
@@ -49,5 +53,10 @@ public class Codigo extends Model {
     public void addProductoToCodigo(Producto p) {
         this.idProducto = p;
         p.idCodigoBarras = this;
+    }
+
+    public void deleteCodigoDeProducto(Producto p) {
+        this.idProducto = null;
+        p.idCodigoBarras = null;
     }
 }

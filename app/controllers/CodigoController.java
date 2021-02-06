@@ -9,8 +9,6 @@ import play.data.FormFactory;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
-import play.twirl.api.Content;
-import views.xml.categorias;
 
 import javax.inject.Inject;
 
@@ -40,7 +38,7 @@ public class CodigoController {
         return Results.status(406);
     }
 
-    public Result postCodigo(Http.Request request, String name) {
+    public Result postCode(Http.Request request, String name) {
         Form<Codigo> c = formfactory.form(Codigo.class).bindFromRequest(request);
         if (c.hasErrors()) {
             return Results.badRequest(c.errorsAsJson());
@@ -57,6 +55,47 @@ public class CodigoController {
                 //Content content = categorias.render(Categoria.getListaCategorias());
                 return Results.ok().as("application/xml");
             }
+        }
+        return Results.status(406);
+    }
+
+    public Result putCode(Http.Request request) {
+        JsonNode json = request.body().asJson();
+        Long nuevoCodigo = json.get("newCode").asLong();
+        Long viejoCodigo = json.get("oldCode").asLong();
+        Codigo codeToUpdate = Codigo.findCodigoById(viejoCodigo);
+        if (codeToUpdate != null) {
+            codeToUpdate.setCodigoBarras(nuevoCodigo);
+            codeToUpdate.update();
+            if (request.accepts("application/json")) {
+                JsonNode jsonCodigos = play.libs.Json.toJson(Codigo.getListaCodigos());
+                return Results.ok(jsonCodigos).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                //Content content = categorias.render(Categoria.getListaCategorias());
+                return Results.ok().as("application/xml");
+            }
+        } else {
+            return Results.notFound();
+        }
+        return Results.status(406);
+    }
+
+    public Result deleteCode(Http.Request request) {
+        JsonNode json = request.body().asJson();
+        Long id = json.get("id").asLong();
+        Codigo codeToDelete = Codigo.findCodigoById(id);
+        if (codeToDelete != null) {
+            codeToDelete.deleteCodigoDeProducto(codeToDelete.getIdProducto());
+            codeToDelete.delete();
+            if (request.accepts("application/json")) {
+                JsonNode jsonCodigos = play.libs.Json.toJson(Codigo.getListaCodigos());
+                return Results.ok(jsonCodigos).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                //Content content = categorias.render(Categoria.getListaCategorias());
+                return Results.ok().as("application/xml");
+            }
+        } else {
+            return Results.notFound();
         }
         return Results.status(406);
     }
