@@ -20,14 +20,14 @@ public class Codigo extends Model {
 
     @Constraints.Required(message = "El código de barras del producto es obligatorio")
     @Constraints.ValidateWith(CodeValidation.class)
-    public String codigoBarras;
+    private String codigoBarras;
 
     @Id
-    public Long id;
+    private Long id;
 
     @JsonIgnore
     @OneToOne(cascade= CascadeType.ALL)
-    public Producto idProducto;
+    private Producto idProducto;
 
     public String getCodigoBarras() { return codigoBarras; }
     public Long getId() {  return id; }

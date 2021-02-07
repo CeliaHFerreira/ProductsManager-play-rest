@@ -21,7 +21,6 @@ public class Categoria extends Model {
     @Constraints.Required(message = "Nombre de la categoria es obligatorio")
     private String nombre;
 
-    @Unique
     @Id private Long Id;
 
     @ManyToMany(cascade = CascadeType.ALL)

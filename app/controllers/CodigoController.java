@@ -1,7 +1,6 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import models.Categoria;
 import models.Codigo;
 import models.Producto;
 import play.data.Form;
@@ -9,6 +8,8 @@ import play.data.FormFactory;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
+import play.twirl.api.Content;
+import views.xml.codigos;
 
 import javax.inject.Inject;
 
@@ -28,9 +29,9 @@ public class CodigoController {
                 return Results.ok(jsonCodigos).as("application/json");
             }
         } else if (request.accepts("application/xml")) {
-            // Content content = categorias.render(Categoria.getListaCategorias());
+            Content content = codigos.render(Codigo.getListaCodigos());
             if (Codigo.getListaCodigos().size() != 0) {
-                return Results.ok().as("application/xml");
+                return Results.ok(content).as("application/xml");
             } else {
                 return Results.notFound();
             }
@@ -52,8 +53,8 @@ public class CodigoController {
                 JsonNode jsonCodigos = play.libs.Json.toJson(Codigo.getListaCodigos());
                 return Results.ok(jsonCodigos).as("application/json");
             } else if (request.accepts("application/xml")) {
-                //Content content = categorias.render(Categoria.getListaCategorias());
-                return Results.ok().as("application/xml");
+                Content content = codigos.render(Codigo.getListaCodigos());
+                return Results.ok(content).as("application/xml");
             }
         }
         return Results.status(406);
@@ -71,8 +72,8 @@ public class CodigoController {
                 JsonNode jsonCodigos = play.libs.Json.toJson(Codigo.getListaCodigos());
                 return Results.ok(jsonCodigos).as("application/json");
             } else if (request.accepts("application/xml")) {
-                //Content content = categorias.render(Categoria.getListaCategorias());
-                return Results.ok().as("application/xml");
+                Content content = codigos.render(Codigo.getListaCodigos());
+                return Results.ok(content).as("application/xml");
             }
         } else {
             return Results.notFound();
@@ -91,8 +92,8 @@ public class CodigoController {
                 JsonNode jsonCodigos = play.libs.Json.toJson(Codigo.getListaCodigos());
                 return Results.ok(jsonCodigos).as("application/json");
             } else if (request.accepts("application/xml")) {
-                //Content content = categorias.render(Categoria.getListaCategorias());
-                return Results.ok().as("application/xml");
+                Content content = codigos.render(Codigo.getListaCodigos());
+                return Results.ok(content).as("application/xml");
             }
         } else {
             return Results.notFound();

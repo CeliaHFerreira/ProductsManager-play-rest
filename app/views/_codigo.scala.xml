@@ -1,0 +1,5 @@
+@(code: Codigo)
+<codigo>
+    <codigoBarras>@code.getCodigoBarras</codigoBarras>
+    <id>@code.getId</id>
+</codigo>

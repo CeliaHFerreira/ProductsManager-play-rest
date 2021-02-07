@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
+import io.ebean.annotation.NotNull;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
@@ -75,7 +76,7 @@ public class Marca extends Model {
         this.categoriaID.add(c);
         c.getMarcaID().add(this);
     }
-    public void removeCategoryToBrand(Categoria c) {
+    public void removeCategoryOfBrand(Categoria c) {
         this.categoriaID.remove(c);
         c.getMarcaID().remove(this);
     }

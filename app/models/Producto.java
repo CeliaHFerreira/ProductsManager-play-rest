@@ -18,9 +18,9 @@ public class Producto extends Model {
 
     @Constraints.Required(message = "Nombre del producto es obligatorio")
     @Constraints.MinLength(value = 2, message = "El nombre del producto no puede ser tan corto")
-    public String nombre;
+    private String nombre;
 
-    @Id public Long id;
+    @Id private Long id;
 
     @JsonIgnore
     @ManyToOne
@@ -28,19 +28,19 @@ public class Producto extends Model {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "productoID")
-    public Set<Categoria> categoriaID = new HashSet<Categoria>();
+    private Set<Categoria> categoriaID = new HashSet<Categoria>();
 
-    public Boolean vegano;
-    public Boolean aptoCG;
+    private Boolean vegano;
+    private Boolean aptoCG;
 
     @Constraints.Min(value = 1, message = "El valor mínimo de un producto es 1€")
-    public Double PVP;
+    private Double PVP;
 
     @Constraints.ValidateWith(HNRValidation.class)
-    public String HNR;
+    private String HNR;
 
     @Constraints.Required(message = "Nombre de la marca del producto es obligatorio")
-    public String nombreMarca;
+    private String nombreMarca;
 
     @JsonIgnore
     @OneToOne(mappedBy="idProducto")

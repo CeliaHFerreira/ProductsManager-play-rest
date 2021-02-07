@@ -1,0 +1,7 @@
+@(codes: List[Codigo])
+<?xml version="1.0" encoding="utf-8" ?>
+<productos>
+    @for(c <- codes) {
+        @_codigo(c)
+    }
+</productos>
