@@ -49,6 +49,10 @@ public class Codigo extends Model {
         return find.query().where().eq("ID", id).findOne();
     }
 
+    static public Codigo findCodigoByProduct(Long product) {
+        return find.query().where().eq("ID_PRODUCTO_ID", product).findOne();
+    }
+
     static public List<Codigo> getListaCodigos() {
         return find.query().findList();
     }

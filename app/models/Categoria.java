@@ -34,18 +34,18 @@ public class Categoria extends Model {
     public String getNombre() {
         return nombre;
     }
-    public Set getProductoID() {
+    public Set<Producto> getProductoID() {
         return productoID;
     }
-    public Set getMarcaID() {
+    public Set<Marca> getMarcaID() {
         return marcaID;
     }
     public Long getId() { return Id; }
 
     public void setId(Long id) { Id = id; }
     public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setProductoID(Set productoID) { this.productoID = productoID; }
-    public void setMarcaID(Set marcaID) { this.marcaID = marcaID; }
+    public void setProductoID(Set<Producto> productoID) { this.productoID = productoID; }
+    public void setMarcaID(Set<Marca> marcaID) { this.marcaID = marcaID; }
 
 
     public static final Finder<Long,Categoria> find = new Finder<>(Categoria.class);
@@ -66,7 +66,7 @@ public class Categoria extends Model {
         this.productoID.add(p);
         p.getCategoriaID().add(this);
     }
-    public void removeProductoToCategory(Producto p) {
+    public void removeProductoOfCategory(Producto p) {
         this.productoID.remove(p);
         p.getCategoriaID().remove(this);
     }
@@ -75,7 +75,7 @@ public class Categoria extends Model {
         this.marcaID.add(m);
         m.getCategoriaID().add(this);
     }
-    public void removeMarcaToCategory(Marca m) {
+    public void removeMarcaOfCategory(Marca m) {
         this.marcaID.remove(m);
         m.getCategoriaID().remove(this);
     }

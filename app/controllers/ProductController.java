@@ -3,6 +3,7 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Categoria;
+import models.Codigo;
 import models.Marca;
 import models.Producto;
 import play.data.Form;
@@ -61,7 +62,6 @@ public class ProductController extends Controller {
     }
 
     public Result putProductItem(Http.Request request, String name) {
-        //To DO uodate categorie when many to many will be correct
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         if (p.hasErrors()) {
             return Results.badRequest(p.errorsAsJson());
@@ -93,11 +93,20 @@ public class ProductController extends Controller {
     }
 
     public Result deleteProductItem(Http.Request request, String name) {
-        //To DO when many to many will be correct
         Producto productTofind = Producto.findProductoByNombre(name);
         Marca productInBrand = Marca.findMarcaByNombre(productTofind.getNombreMarca());
         if (productTofind != null) {
             productInBrand.deleteProducto(productTofind);
+            for (Categoria category: productTofind.getCategoriaID()) {
+                category.removeProductoOfCategory(productTofind);
+                category.save();
+            }
+            Codigo code = Codigo.findCodigoByProduct(productTofind.getId());
+            if (code != null) {
+                code.deleteCodigoDeProducto(code.getIdProducto());
+                code.delete();
+            }
+            productInBrand.save();
             productTofind.delete();
             Producto.getListaProductos().remove(productTofind);
             if (request.accepts("application/json")) {

@@ -29,7 +29,7 @@ public class Marca extends Model {
 
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Categoria> categoriaID = new HashSet<Categoria>();
+    public Set<Categoria> categoriaID = new HashSet<Categoria>();
 
     @JsonIgnore
     @OneToMany(cascade= CascadeType.ALL, mappedBy="marcaID")
@@ -41,15 +41,15 @@ public class Marca extends Model {
     public String getNombre() { return nombre; }
     public Long getId() { return Id; }
     public Marcas getMarcaID() { return marcasID; }
-    public Set getCategoriaID() {  return categoriaID; }
-    public List getProductoID() {  return productoID;  }
+    public Set<Categoria> getCategoriaID() {  return categoriaID; }
+    public List<Producto> getProductoID() {  return productoID;  }
     public Boolean getVegano() { return vegano; }
 
     public void setMarcaID(Marcas marcaID) { this.marcasID = marcaID; }
     public void setId(Long id) { Id = id; }
     public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setCategoriaID(Set categoriaID) { this.categoriaID = categoriaID; }
-    public void setProductoID(List productoID) { this.productoID = productoID; }
+    public void setCategoriaID(Set<Categoria> categoriaID) { this.categoriaID = categoriaID; }
+    public void setProductoID(List<Producto> productoID) { this.productoID = productoID; }
     public void setVegano(Boolean vegano) { this.vegano = vegano; }
 
 
