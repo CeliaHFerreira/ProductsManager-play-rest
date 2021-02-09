@@ -94,9 +94,9 @@ public class ProductController extends Controller {
 
     public Result deleteProductItem(Http.Request request, String name) {
         Producto productTofind = Producto.findProductoByNombre(name);
-        Marca productInBrand = Marca.findMarcaByNombre(productTofind.getNombreMarca());
+        Marca brandOfProduct = Marca.findMarcaByNombre(productTofind.getNombreMarca());
         if (productTofind != null) {
-            productInBrand.deleteProducto(productTofind);
+            brandOfProduct.deleteProducto(productTofind);
             for (Categoria category: productTofind.getCategoriaID()) {
                 category.removeProductoOfCategory(productTofind);
                 category.save();
@@ -106,9 +106,8 @@ public class ProductController extends Controller {
                 code.deleteCodigoDeProducto(code.getIdProducto());
                 code.delete();
             }
-            productInBrand.save();
+            brandOfProduct.save();
             productTofind.delete();
-            Producto.getListaProductos().remove(productTofind);
             if (request.accepts("application/json")) {
                 JsonNode jsonProducto = play.libs.Json.toJson(Producto.getListaProductos());
                 return ok(jsonProducto).as("application/json");

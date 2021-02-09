@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Categoria;
+import models.Codigo;
 import models.Marca;
 import models.Producto;
 import play.data.Form;
@@ -16,7 +17,7 @@ import views.xml.categorias;
 import views.xml.productos;
 
 import javax.inject.Inject;
-import java.util.List;
+import java.util.*;
 
 /**
  * Categories controller
@@ -114,6 +115,36 @@ public class CategoriesController extends Controller {
             Categoria category = c.get();
             Categoria categorieToDelete = Categoria.findCategoriaByNombre(category.getNombre());
             if (categorieToDelete != null) {
+                ArrayList<Producto> productoIterable = new ArrayList<Producto>();
+                for (Producto product : categorieToDelete.getProductoID()) {
+                    productoIterable.add(product);
+                }
+                for(Integer i = 0; i < productoIterable.size(); i ++) {
+                    Codigo code = Codigo.findCodigoByProduct(productoIterable.get(i).getId());
+                    if (code != null) {
+                        code.deleteCodigoDeProducto(code.getIdProducto());
+                        code.delete();
+                        productoIterable.get(i).save();
+                    }
+
+                    Marca brandInProduct = Marca.findMarcaByNombre(productoIterable.get(i).getNombreMarca());
+                    brandInProduct.deleteProducto(productoIterable.get(i));
+                    brandInProduct.save();
+
+                    categorieToDelete.removeProductoOfCategory(productoIterable.get(i));
+                    categorieToDelete.save();
+                    productoIterable.get(i).delete();
+                }
+
+                ArrayList<Marca> marcaIterable = new ArrayList<Marca>();
+                for (Marca brand : categorieToDelete.getMarcaID()) {
+                    marcaIterable.add(brand);
+                }
+                for(Integer i = 0; i < marcaIterable.size(); i++) {
+                    categorieToDelete.removeMarcaOfCategory(marcaIterable.get(i));
+                    marcaIterable.get(i).save();
+                }
+
                 categorieToDelete.delete();
                 if (request.accepts("application/json")) {
                     JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.getListaCategorias());

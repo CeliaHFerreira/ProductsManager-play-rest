@@ -71,5 +71,6 @@ public class Marcas extends Model {
     }
     public void deleteMarca(Marca m) {
         this.marcaID.remove(m);
+        m.marcasID = null;
     }
 }

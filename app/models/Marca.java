@@ -70,6 +70,7 @@ public class Marca extends Model {
     }
     public void deleteProducto(Producto p) {
         this.productoID.remove(p);
+        p.marcaID = null;
     }
 
     public void addCategoryToBrand(Categoria c) {
