@@ -76,15 +76,11 @@ public class Producto extends Model {
     }
 
     static public Producto findProductoById(Long id) {
-        return find.query().where().eq("Id", id).findOne();
+        return find.query().where().eq("id", id).findOne();
     }
 
     static public List<Producto> getListaProductos() {
         return find.query().findList();
-    }
-
-    static public List<Producto> getListaProductosCategoria(Long categoriaID) {
-        return find.query().where().eq("categoriaID", categoriaID).findList();
     }
 
     static public List<Producto> getListaProductosMarca(String nombreMarca) {

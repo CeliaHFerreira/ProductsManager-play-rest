@@ -56,6 +56,9 @@ public class CategoriesController extends Controller {
             return Results.badRequest(p.errorsAsJson());
         } else {
             Producto product = p.get();
+            // TO DOOOOOOOOO
+            //Controlar que puede haber más de uno que se llame igual
+            // Para que sea repetido tiene que llamarse igual, de la misma marca y en la misma categoria
             Producto productRepeated = Producto.findProductoByNombre(product.getNombre());
             if (productRepeated != null) {
                 return Results.badRequest("El producto ya existe en el servidor");

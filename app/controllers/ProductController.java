@@ -92,8 +92,8 @@ public class ProductController extends Controller {
         return status(406);
     }
 
-    public Result deleteProductItem(Http.Request request, String name) {
-        Producto productTofind = Producto.findProductoByNombre(name);
+    public Result deleteProductItem(Http.Request request, Long id) {
+        Producto productTofind = Producto.findProductoById(id);
         Marca brandOfProduct = Marca.findMarcaByNombre(productTofind.getNombreMarca());
         if (productTofind != null) {
             brandOfProduct.deleteProducto(productTofind);
