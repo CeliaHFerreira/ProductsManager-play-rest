@@ -16,8 +16,8 @@ import java.util.List;
 @JsonIgnoreProperties(value = {"_ebean_intercept"})
 public class Marcas extends Model {
 
-    @Constraints.Required(message = "Nombre de la marca es obligatorio")
-    @Constraints.MinLength(value = 2, message = "El nombre de la marca no puede ser tan corto")
+    @Constraints.Required(message = "brand-name-required")
+    @Constraints.MinLength(value = 2, message = "brand-name-lenght")
     private String nombre;
 
     @Id private Long Id;

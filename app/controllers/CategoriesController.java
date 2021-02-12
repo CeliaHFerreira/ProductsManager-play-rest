@@ -7,6 +7,8 @@ import models.Marca;
 import models.Producto;
 import play.data.Form;
 import play.data.FormFactory;
+import play.i18n.Messages;
+import play.i18n.MessagesApi;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -23,9 +25,16 @@ import java.util.*;
  * Categories controller
  */
 public class CategoriesController extends Controller {
-
     @Inject
     FormFactory formfactory;
+
+    private final play.i18n.MessagesApi messagesApi;
+
+    @Inject
+    public CategoriesController(MessagesApi messagesApi) {
+        this.messagesApi = messagesApi;
+    }
+
 
     public Result getCategory(Http.Request request) {
         Form<Categoria> c = formfactory.form(Categoria.class).bindFromRequest(request);
@@ -61,13 +70,19 @@ public class CategoriesController extends Controller {
             // Para que sea repetido tiene que llamarse igual, de la misma marca y en la misma categoria
             Producto productRepeated = Producto.findProductoByNombre(product.getNombre());
             if (productRepeated != null) {
-                return Results.badRequest("El producto ya existe en el servidor");
+                Messages messages = this.messagesApi.preferred(request);
+                String response = messages.at("product.repeated");
+                return Results.badRequest(response);
             } else {
                 Marca brand = Marca.findMarcaByNombre(product.getNombreMarca());
                 if (categoryTofind == null) {
-                    return Results.notFound("La categoria no existe");
+                    Messages messages = this.messagesApi.preferred(request);
+                    String response = messages.at("category.not.found");
+                    return Results.notFound(response);
                 } else if (brand == null) {
-                    return Results.notFound("La marca no existe");
+                    Messages messages = this.messagesApi.preferred(request);
+                    String response = messages.at("brand.not.found");
+                    return Results.notFound(response);
                 }
                 categoryTofind.addProductoToCategory(product);
                 brand.addCategoryToBrand(categoryTofind);

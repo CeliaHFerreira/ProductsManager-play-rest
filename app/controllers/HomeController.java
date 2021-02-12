@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Categoria;
 import play.data.Form;
 import play.data.FormFactory;
+import play.i18n.Messages;
+import play.i18n.MessagesApi;
 import play.mvc.*;
 import play.twirl.api.Content;
 import views.xml.categorias;
@@ -18,6 +20,13 @@ public class HomeController extends Controller {
 
     @Inject
     FormFactory formfactory;
+
+    private final play.i18n.MessagesApi messagesApi;
+
+    @Inject
+    public HomeController(MessagesApi messagesApi) {
+        this.messagesApi = messagesApi;
+    }
 
     public Result index() {
         return ok(views.html.index.render());
@@ -53,7 +62,9 @@ public class HomeController extends Controller {
             Categoria category = c.get();
             Categoria categoryRepeated = Categoria.findCategoriaByNombre(category.getNombre());
             if (categoryRepeated != null) {
-                return Results.badRequest("La categoria ya existe en el servidor").as("application/json");
+                Messages messages = this.messagesApi.preferred(request);
+                String response = messages.at("category.repeated");
+                return Results.badRequest(response);
             } else {
                 category.save();
                 if (request.accepts("application/json")) {

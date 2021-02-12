@@ -1,0 +1,15 @@
+brand.name.required = Brand name field is required
+brand.name.lenght = Brand name field cannot be too short
+category.name.required = Category name field is required
+product.name.required = Product name field is required
+product.name.length = Product name field cannot be too short
+product.pvp = The minimum value of a product is 1
+product.name.brand.required = Product brand name field is required
+product.hnr.validation = Products have as allowed values in the hnr field: repair, nutrition or hydration, in case of not knowing the value of this field, it must not be left empty
+code.product.required = Product barcode field is required
+code.validation = Barcode entered is not correct
+brand.repeated = Brand already exists
+product.repeated = Product already exists
+category.not.found = Category does not exist
+brand.not.found = Brand does not exist
+category.repeated = Category already exist

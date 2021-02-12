@@ -47,22 +47,22 @@ public class BrandController extends Controller {
             Marca brand = m.get();
             Marca brandTofind = Marca.findMarcaByNombre(brand.getNombre());
             Marcas brandInBrands = Marcas.findById(brandTofind.getId());
-                if (brandTofind != null) {
-                    brandTofind.setNombre(brand.getNombre());
-                    brandTofind.setVegano(brand.getVegano());
-                    brandInBrands.setNombre(brand.getNombre());
-                    brandInBrands.update();
-                    brandTofind.update();
-                    if (request.accepts("application/json")) {
-                        JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
-                        return ok(brandUpdated).as("application/json");
-                    } else if (request.accepts("application/xml")) {
-                        Content content = marca.render(brandTofind);
-                        return Results.ok(content).as("application/xml");
-                    }
-                } else {
-                    return Results.notFound();
+            if (brandTofind != null) {
+                brandTofind.setNombre(brand.getNombre());
+                brandTofind.setVegano(brand.getVegano());
+                brandInBrands.setNombre(brand.getNombre());
+                brandInBrands.update();
+                brandTofind.update();
+                if (request.accepts("application/json")) {
+                    JsonNode brandUpdated = play.libs.Json.toJson(brandTofind);
+                    return ok(brandUpdated).as("application/json");
+                } else if (request.accepts("application/xml")) {
+                    Content content = marca.render(brandTofind);
+                    return Results.ok(content).as("application/xml");
                 }
+            } else {
+                return Results.notFound();
+            }
         }
         return status(406);
     }

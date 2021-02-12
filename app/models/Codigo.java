@@ -18,7 +18,7 @@ import java.util.List;
 @JsonIgnoreProperties(value = {"_ebean_intercept"})
 public class Codigo extends Model {
 
-    @Constraints.Required(message = "El código de barras del producto es obligatorio")
+    @Constraints.Required(message = "code-product-required")
     @Constraints.ValidateWith(CodeValidation.class)
     private String codigoBarras;
 

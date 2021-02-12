@@ -16,8 +16,8 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"_ebean_intercept"})
 public class Producto extends Model {
 
-    @Constraints.Required(message = "Nombre del producto es obligatorio")
-    @Constraints.MinLength(value = 2, message = "El nombre del producto no puede ser tan corto")
+    @Constraints.Required(message = "product-name-required")
+    @Constraints.MinLength(value = 2, message = "product-name-length")
     private String nombre;
 
     @Id private Long id;
@@ -33,13 +33,14 @@ public class Producto extends Model {
     private Boolean vegano;
     private Boolean aptoCG;
 
-    @Constraints.Min(value = 1, message = "El valor mínimo de un producto es 1€")
+    @Constraints.Min(value = 1, message = "product-pvp")
     private Double PVP;
 
     @Constraints.ValidateWith(HNRValidation.class)
     private String HNR;
 
-    @Constraints.Required(message = "Nombre de la marca del producto es obligatorio")
+    @Constraints.Required(message = "product-name-brand-required")
+    @Constraints.MinLength(value = 2, message = "brand-name-lenght")
     private String nombreMarca;
 
     @JsonIgnore

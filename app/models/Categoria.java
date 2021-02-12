@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @JsonIgnoreProperties(value = {"_ebean_intercept"})
 public class Categoria extends Model {
-    @Constraints.Required(message = "Nombre de la categoria es obligatorio")
+    @Constraints.Required(message = "brand-name-required")
     private String nombre;
 
     @Id private Long Id;

@@ -5,6 +5,8 @@ import models.Marca;
 import models.Marcas;
 import play.data.Form;
 import play.data.FormFactory;
+import play.i18n.Messages;
+import play.i18n.MessagesApi;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -18,9 +20,16 @@ import javax.inject.Inject;
  * BrandsController
  */
 public class BrandsController extends Controller {
-
     @Inject
     FormFactory formfactory;
+
+    private final play.i18n.MessagesApi messagesApi;
+
+    @Inject
+    public BrandsController(MessagesApi messagesApi) {
+        this.messagesApi = messagesApi;
+    }
+
 
     public Result getBrands(Http.Request request) {
         if (Marcas.getListaMarcas().size() == 0) {
@@ -51,7 +60,9 @@ public class BrandsController extends Controller {
             Marcas brands = bs.get();
             Marca brandRepeated = Marca.findMarcaByNombre(brand.getNombre());
             if (brandRepeated != null) {
-                return Results.badRequest("La marca ya existe en el servidor");
+                Messages messages = this.messagesApi.preferred(request);
+                String response = messages.at("brand.repeated");
+                return Results.badRequest(response);
             } else {
                 brands.addMarca(brand);
                 brands.save();

@@ -1,0 +1,15 @@
+brand.name.required = El campo nombre de la marca es obligatorio
+brand.name.lenght = El campo nombre de la marca no puede ser tan corto
+category.name.required = El campo nombre de la categoria es obligatorio
+product.name.required = El campo nombre del producto es obligatorio
+product.name.length = El campo nombre del producto no puede ser tan corto
+product.pvp = El valor mínimo de un producto es 1
+product.name.brand.required = El campo nombre de la marca del producto es obligatorio
+product.hnr.validation = Los productos tienen como valores admitidos en el campo hnr reparación, nutrición o hidratación, en caso de no saber el valor de dicho campo no se debe de quedar vacio
+code.product.required = El campo codigo de barras del producto es obligatorio
+code.validation = El codigo de barras introducido no es correcto
+brand.repeated = La marca ya existe en el servidor
+product.repeated = El producto ya existe en el servidor
+category.not.found = La categoria no existe
+brand.not.found = La marca no existe
+category.repeated = La categoria ya existe en el servidor
