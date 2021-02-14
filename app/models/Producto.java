@@ -72,8 +72,8 @@ public class Producto extends Model {
 
     public static final Finder<Long,Producto> find = new Finder<>(Producto.class);
 
-    static public Producto findProductoByNombre(String nombre) {
-        return find.query().where().eq("nombre", nombre).findOne();
+    static public Producto findProductoByNombreAndBrand(String nombre, String brand) {
+        return find.query().where().eq("nombre", nombre).eq("nombreMarca", brand).findOne();
     }
 
     static public Producto findProductoById(Long id) {

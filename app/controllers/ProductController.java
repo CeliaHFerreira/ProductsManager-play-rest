@@ -45,8 +45,8 @@ public class ProductController extends Controller {
         return status(406);
     }
 
-    public Result getProductItem(Http.Request request, String name) {
-        Producto productTofind = Producto.findProductoByNombre(name);
+    public Result getProductItem(Http.Request request, Long id) {
+        Producto productTofind = Producto.findProductoById(id);
         if (productTofind != null) {
             if (request.accepts("application/json")) {
                 JsonNode jsonFindProducto = play.libs.Json.toJson(productTofind);
@@ -61,13 +61,13 @@ public class ProductController extends Controller {
         return status(406);
     }
 
-    public Result putProductItem(Http.Request request, String name) {
+    public Result putProductItem(Http.Request request, Long id) {
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         if (p.hasErrors()) {
             return Results.badRequest(p.errorsAsJson());
         }else {
             Producto product = p.get();
-            Producto productTofind = Producto.findProductoByNombre(name);
+            Producto productTofind = Producto.findProductoById(id);
             if (productTofind != null) {
                 productTofind.setNombre(product.getNombre());
                 productTofind.setVegano(product.getVegano());

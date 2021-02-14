@@ -65,11 +65,8 @@ public class CategoriesController extends Controller {
             return Results.badRequest(p.errorsAsJson());
         } else {
             Producto product = p.get();
-            // TO DOOOOOOOOO
-            //Controlar que puede haber más de uno que se llame igual
-            // Para que sea repetido tiene que llamarse igual, de la misma marca y en la misma categoria
-            Producto productRepeated = Producto.findProductoByNombre(product.getNombre());
-            if (productRepeated != null) {
+            Producto productRepeated = Producto.findProductoByNombreAndBrand(product.getNombre(), product.getNombreMarca());
+            if (productRepeated != null && productRepeated.getNombreMarca() != product.getNombreMarca()) {
                 Messages messages = this.messagesApi.preferred(request);
                 String response = messages.at("product.repeated");
                 return Results.badRequest(response);

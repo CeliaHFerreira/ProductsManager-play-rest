@@ -39,13 +39,13 @@ public class CodigoController {
         return Results.status(406);
     }
 
-    public Result postCode(Http.Request request, String name) {
+    public Result postCode(Http.Request request, Long id) {
         Form<Codigo> c = formfactory.form(Codigo.class).bindFromRequest(request);
         if (c.hasErrors()) {
             return Results.badRequest(c.errorsAsJson());
         } else {
             Codigo code = c.get();
-            Producto product = Producto.findProductoByNombre(name);
+            Producto product = Producto.findProductoById(id);
             code.addProductoToCodigo(product);
             product.save();
             code.save();

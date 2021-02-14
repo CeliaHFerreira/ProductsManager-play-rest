@@ -33,19 +33,19 @@ DELETE      /marca/categoria                controllers.CategoriesController.del
 
 
 # Routes producto desde marca
-GET         /marca/producto                 controllers.ProductController.getProductItem(request: Request, name: String)
-PUT         /marca/producto                 controllers.ProductController.putProductItem(request: Request, name: String)
+GET         /marca/producto                 controllers.ProductController.getProductItem(request: Request, id: Long)
+PUT         /marca/producto                 controllers.ProductController.putProductItem(request: Request, id: Long)
 DELETE      /marca/producto                 controllers.ProductController.deleteProductItem(request: Request, id: Long)
 GET         /marca/producto/list            controllers.ProductController.getProductListBrand(request: Request, name: String)
 GET         /marca/listaproducto            controllers.ProductController.getProducts(request: Request)
-POST        /marca/producto/codigo          controllers.CodigoController.postCode(request: Request, name: String)
+POST        /marca/producto/codigo          controllers.CodigoController.postCode(request: Request, id: Long)
 
 # Routes producto desde categoria
-GET         /categoria/producto             controllers.ProductController.getProductItem(request: Request, name: String)
-PUT         /categoria/producto             controllers.ProductController.putProductItem(request: Request, name: String)
+GET         /categoria/producto             controllers.ProductController.getProductItem(request: Request, id: Long)
+PUT         /categoria/producto             controllers.ProductController.putProductItem(request: Request, id: Long)
 DELETE      /categoria/producto             controllers.ProductController.deleteProductItem(request: Request, id: Long)
 GET         /categoria/listaproducto        controllers.ProductController.getProducts(request: Request)
-POST        /categoria/producto/codigo      controllers.CodigoController.postCode(request: Request, name: String)
+POST        /categoria/producto/codigo      controllers.CodigoController.postCode(request: Request, id: Long)
 
 #Routes codigo de barras
 GET         /marca/producto/codigo          controllers.CodigoController.getCode(request: Request)
