@@ -68,8 +68,8 @@ public class HomeController extends Controller {
             } else {
                 category.save();
                 if (request.accepts("application/json")) {
-                    JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.getListaCategorias());
-                    return ok(jsonCategorias).as("application/json");
+                    JsonNode jsonCategories = play.libs.Json.toJson(Categoria.getListaCategorias());
+                    return ok(jsonCategories).as("application/json");
                 } else if (request.accepts("application/xml")) {
                     Content content = categorias.render(Categoria.getListaCategorias());
                     return Results.ok(content).as("application/xml");

@@ -22,11 +22,11 @@ public class CodigoController {
 
     public Result getCode(Http.Request request) {
         if(request.accepts("application/json")) {
-            JsonNode jsonCodigos = play.libs.Json.toJson(Codigo.getListaCodigos());
-            if (jsonCodigos.size() == 0) {
+            JsonNode jsonCodes = play.libs.Json.toJson(Codigo.getListaCodigos());
+            if (jsonCodes.size() == 0) {
                 return Results.notFound();
             } else {
-                return Results.ok(jsonCodigos).as("application/json");
+                return Results.ok(jsonCodes).as("application/json");
             }
         } else if (request.accepts("application/xml")) {
             Content content = codigos.render(Codigo.getListaCodigos());
@@ -50,8 +50,8 @@ public class CodigoController {
             product.save();
             code.save();
             if (request.accepts("application/json")) {
-                JsonNode jsonCodigos = play.libs.Json.toJson(Codigo.getListaCodigos());
-                return Results.ok(jsonCodigos).as("application/json");
+                JsonNode jsonCodes = play.libs.Json.toJson(Codigo.getListaCodigos());
+                return Results.ok(jsonCodes).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = codigos.render(Codigo.getListaCodigos());
                 return Results.ok(content).as("application/xml");
@@ -62,15 +62,15 @@ public class CodigoController {
 
     public Result putCode(Http.Request request) {
         JsonNode json = request.body().asJson();
-        String nuevoCodigo = json.get("newCode").asText();
-        Long viejoCodigo = json.get("oldCode").asLong();
-        Codigo codeToUpdate = Codigo.findCodigoById(viejoCodigo);
+        String newCode = json.get("newCode").asText();
+        Long oldCode = json.get("oldCode").asLong();
+        Codigo codeToUpdate = Codigo.findCodigoById(oldCode);
         if (codeToUpdate != null) {
-            codeToUpdate.setCodigoBarras(nuevoCodigo);
+            codeToUpdate.setCodigoBarras(newCode);
             codeToUpdate.update();
             if (request.accepts("application/json")) {
-                JsonNode jsonCodigos = play.libs.Json.toJson(Codigo.getListaCodigos());
-                return Results.ok(jsonCodigos).as("application/json");
+                JsonNode jsonCodes = play.libs.Json.toJson(Codigo.getListaCodigos());
+                return Results.ok(jsonCodes).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = codigos.render(Codigo.getListaCodigos());
                 return Results.ok(content).as("application/xml");
@@ -86,11 +86,13 @@ public class CodigoController {
         Long id = json.get("id").asLong();
         Codigo codeToDelete = Codigo.findCodigoById(id);
         if (codeToDelete != null) {
+            // Eliminar codigos del producto
             codeToDelete.deleteCodigoDeProducto(codeToDelete.getIdProducto());
+            // Eliminar codigo
             codeToDelete.delete();
             if (request.accepts("application/json")) {
-                JsonNode jsonCodigos = play.libs.Json.toJson(Codigo.getListaCodigos());
-                return Results.ok(jsonCodigos).as("application/json");
+                JsonNode jsonCodes = play.libs.Json.toJson(Codigo.getListaCodigos());
+                return Results.ok(jsonCodes).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = codigos.render(Codigo.getListaCodigos());
                 return Results.ok(content).as("application/xml");

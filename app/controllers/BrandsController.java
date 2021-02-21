@@ -36,8 +36,8 @@ public class BrandsController extends Controller {
             return Results.notFound();
         } else {
             if (request.accepts("application/json")) {
-                JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
-                return ok(jsonMarcas).as("application/json");
+                JsonNode jsonBrands = play.libs.Json.toJson(Marcas.getListaMarcas());
+                return ok(jsonBrands).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = marcas.render(Marcas.getListaMarcas());
                 if (Marcas.getListaMarcas().size() != 0) {
@@ -58,17 +58,19 @@ public class BrandsController extends Controller {
         } else {
             Marca brand = b.get();
             Marcas brands = bs.get();
+            // Controlar que no esta ya introducida la marca
             Marca brandRepeated = Marca.findMarcaByNombre(brand.getNombre());
             if (brandRepeated != null) {
                 Messages messages = this.messagesApi.preferred(request);
                 String response = messages.at("brand.repeated");
                 return Results.badRequest(response);
             } else {
+                // Añadir marca
                 brands.addMarca(brand);
                 brands.save();
                 if (request.accepts("application/json")) {
-                    JsonNode jsonMarcas = play.libs.Json.toJson(Marcas.getListaMarcas());
-                    return ok(jsonMarcas).as("application/json");
+                    JsonNode jsonBrands = play.libs.Json.toJson(Marcas.getListaMarcas());
+                    return ok(jsonBrands).as("application/json");
                 } else if (request.accepts("application/xml")) {
                     Content content = marcas.render(Marcas.getListaMarcas());
                     return Results.ok(content).as("application/xml");

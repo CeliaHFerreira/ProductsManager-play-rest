@@ -1,7 +1,6 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Categoria;
 import models.Codigo;
 import models.Marca;
@@ -31,8 +30,8 @@ public class ProductController extends Controller {
             return Results.notFound();
         } else {
             if (request.accepts("application/json")) {
-                JsonNode jsonRest = play.libs.Json.toJson(Producto.getListaProductos());
-                return ok(jsonRest).as("application/json");
+                JsonNode jsonProducts = play.libs.Json.toJson(Producto.getListaProductos());
+                return ok(jsonProducts).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = productos.render(Producto.getListaProductos());
                 if (Producto.getListaProductos().size() != 0) {
@@ -49,8 +48,8 @@ public class ProductController extends Controller {
         Producto productTofind = Producto.findProductoById(id);
         if (productTofind != null) {
             if (request.accepts("application/json")) {
-                JsonNode jsonFindProducto = play.libs.Json.toJson(productTofind);
-                return ok(jsonFindProducto).as("application/json");
+                JsonNode jsonFindProduct = play.libs.Json.toJson(productTofind);
+                return ok(jsonFindProduct).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = producto.render(productTofind);
                 return Results.ok(content).as("application/xml");
@@ -96,11 +95,14 @@ public class ProductController extends Controller {
         Producto productTofind = Producto.findProductoById(id);
         Marca brandOfProduct = Marca.findMarcaByNombre(productTofind.getNombreMarca());
         if (productTofind != null) {
+            // Eliminar el producto de la marca
             brandOfProduct.deleteProducto(productTofind);
+            // Eliminar el producto de la categoria
             for (Categoria category: productTofind.getCategoriaID()) {
                 category.removeProductoOfCategory(productTofind);
                 category.save();
             }
+            // Eliminar el codigo del producto
             Codigo code = Codigo.findCodigoByProduct(productTofind.getId());
             if (code != null) {
                 code.deleteCodigoDeProducto(code.getIdProducto());
@@ -109,8 +111,8 @@ public class ProductController extends Controller {
             brandOfProduct.save();
             productTofind.delete();
             if (request.accepts("application/json")) {
-                JsonNode jsonProducto = play.libs.Json.toJson(Producto.getListaProductos());
-                return ok(jsonProducto).as("application/json");
+                JsonNode jsonProduct = play.libs.Json.toJson(Producto.getListaProductos());
+                return ok(jsonProduct).as("application/json");
             } else if (request.accepts("application/xml")) {
                 Content content = productos.render(Producto.getListaProductos());
                 return Results.ok(content).as("application/xml");
@@ -126,8 +128,8 @@ public class ProductController extends Controller {
         Marca marcaTofind = Marca.findMarcaByNombre(name);
         if (marcaTofind != null) {
             if (request.accepts("application/json")) {
-                JsonNode jsonListaProductos = play.libs.Json.toJson(Producto.getListaProductosMarca(marcaTofind.getNombre()));
-                return ok(jsonListaProductos).as("application/json");
+                JsonNode jsonListProducts = play.libs.Json.toJson(Producto.getListaProductosMarca(marcaTofind.getNombre()));
+                return ok(jsonListProducts).as("application/json");
             } else if (request.accepts("application/xml")) {
                 List<Producto> productList = Producto.getListaProductosMarca(marcaTofind.getNombre());
                 if (productList != null) {

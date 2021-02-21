@@ -45,8 +45,8 @@ public class CategoriesController extends Controller {
             Categoria categoryTofind = Categoria.findCategoriaByNombre(category.getNombre());
             if (categoryTofind != null) {
                 if (request.accepts("application/json")) {
-                    JsonNode jsonFindCategoria = play.libs.Json.toJson(categoryTofind);
-                    return ok(jsonFindCategoria).as("application/json");
+                    JsonNode jsonFindCategory = play.libs.Json.toJson(categoryTofind);
+                    return ok(jsonFindCategory).as("application/json");
                 } else if (request.accepts("application/xml")) {
                     Content content = categoria.render(categoryTofind);
                     return Results.ok(content).as("application/xml");
@@ -58,13 +58,14 @@ public class CategoriesController extends Controller {
         return status(406);
     }
 
-    public Result postCategory(Http.Request request, String name) {
+    public Result postProduct(Http.Request request, String name) {
         Categoria categoryTofind = Categoria.findCategoriaByNombre(name);
         Form<Producto> p = formfactory.form(Producto.class).bindFromRequest(request);
         if(p.hasErrors()) {
             return Results.badRequest(p.errorsAsJson());
         } else {
             Producto product = p.get();
+            // Ver si esta repetido el producto
             Producto productRepeated = Producto.findProductoByNombreAndBrand(product.getNombre(), product.getNombreMarca());
             if (productRepeated != null && productRepeated.getNombreMarca() != product.getNombreMarca()) {
                 Messages messages = this.messagesApi.preferred(request);
@@ -73,14 +74,17 @@ public class CategoriesController extends Controller {
             } else {
                 Marca brand = Marca.findMarcaByNombre(product.getNombreMarca());
                 if (categoryTofind == null) {
+                    // No existe categoria
                     Messages messages = this.messagesApi.preferred(request);
                     String response = messages.at("category.not.found");
                     return Results.notFound(response);
                 } else if (brand == null) {
+                    // No existe marca
                     Messages messages = this.messagesApi.preferred(request);
                     String response = messages.at("brand.not.found");
                     return Results.notFound(response);
                 }
+                // Añadir producto
                 categoryTofind.addProductoToCategory(product);
                 brand.addCategoryToBrand(categoryTofind);
                 brand.addProducto(product);
@@ -128,42 +132,45 @@ public class CategoriesController extends Controller {
             return Results.badRequest(c.errorsAsJson());
         } else {
             Categoria category = c.get();
-            Categoria categorieToDelete = Categoria.findCategoriaByNombre(category.getNombre());
-            if (categorieToDelete != null) {
+            Categoria categoryToDelete = Categoria.findCategoriaByNombre(category.getNombre());
+            if (categoryToDelete != null) {
+                // Buscar todos los productos de la categoria
                 ArrayList<Producto> productoIterable = new ArrayList<Producto>();
-                for (Producto product : categorieToDelete.getProductoID()) {
+                for (Producto product : categoryToDelete.getProductoID()) {
                     productoIterable.add(product);
                 }
                 for(Integer i = 0; i < productoIterable.size(); i ++) {
+                    // Eliminar codigo de barras de cada producto
                     Codigo code = Codigo.findCodigoByProduct(productoIterable.get(i).getId());
                     if (code != null) {
                         code.deleteCodigoDeProducto(code.getIdProducto());
                         code.delete();
                         productoIterable.get(i).save();
                     }
-
+                    // Eliminar el producto de la marca
                     Marca brandInProduct = Marca.findMarcaByNombre(productoIterable.get(i).getNombreMarca());
                     brandInProduct.deleteProducto(productoIterable.get(i));
                     brandInProduct.save();
-
-                    categorieToDelete.removeProductoOfCategory(productoIterable.get(i));
-                    categorieToDelete.save();
+                    // Eliminar el producto
+                    categoryToDelete.removeProductoOfCategory(productoIterable.get(i));
+                    categoryToDelete.save();
                     productoIterable.get(i).delete();
                 }
-
+                // Buscar las marcas de la categoria
                 ArrayList<Marca> marcaIterable = new ArrayList<Marca>();
-                for (Marca brand : categorieToDelete.getMarcaID()) {
+                for (Marca brand : categoryToDelete.getMarcaID()) {
                     marcaIterable.add(brand);
                 }
                 for(Integer i = 0; i < marcaIterable.size(); i++) {
-                    categorieToDelete.removeMarcaOfCategory(marcaIterable.get(i));
+                    // Eliminar las marcas
+                    categoryToDelete.removeMarcaOfCategory(marcaIterable.get(i));
                     marcaIterable.get(i).save();
                 }
-
-                categorieToDelete.delete();
+                // Eliminar la categoria
+                categoryToDelete.delete();
                 if (request.accepts("application/json")) {
-                    JsonNode jsonCategorias = play.libs.Json.toJson(Categoria.getListaCategorias());
-                    return ok(jsonCategorias).as("application/json");
+                    JsonNode jsonCategories = play.libs.Json.toJson(Categoria.getListaCategorias());
+                    return ok(jsonCategories).as("application/json");
                 } else if (request.accepts("application/xml")) {
                     Content content = categorias.render(Categoria.getListaCategorias());
                     return Results.ok(content).as("application/xml");

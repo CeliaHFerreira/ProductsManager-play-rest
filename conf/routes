@@ -20,14 +20,14 @@ DELETE      /marcas/marca                   controllers.BrandController.deleteBr
 
 # Routes categoria
 GET         /categoria                      controllers.CategoriesController.getCategory(request: Request)
-POST        /categoria                      controllers.CategoriesController.postCategory(request: Request, name:String)
+POST        /categoria                      controllers.CategoriesController.postProduct(request: Request, name:String)
 PUT         /categoria                      controllers.CategoriesController.putCategory(request: Request, name: String)
 DELETE      /categoria                      controllers.CategoriesController.deleteCategory(request: Request)
 
 
 # Routes categoria desde una marca
 GET         /marca/categoria                controllers.CategoriesController.getCategory(request: Request)
-POST        /marca/categoria                controllers.CategoriesController.postCategory(request: Request, name:String)
+POST        /marca/categoria                controllers.CategoriesController.postProduct(request: Request, name:String)
 PUT         /marca/categoria                controllers.CategoriesController.putCategory(request: Request, name: String)
 DELETE      /marca/categoria                controllers.CategoriesController.deleteCategory(request: Request)
 
