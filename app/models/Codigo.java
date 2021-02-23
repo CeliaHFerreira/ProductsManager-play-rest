@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
 import models.Validators.CodeValidation;
-import models.Validators.HNRValidation;
 import play.data.validation.Constraints;
 
 import javax.persistence.CascadeType;

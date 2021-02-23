@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
-import org.checkerframework.common.aliasing.qual.Unique;
 import play.data.validation.Constraints;
 
 import javax.persistence.CascadeType;
