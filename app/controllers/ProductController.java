@@ -181,4 +181,22 @@ public class ProductController extends Controller {
         return status(406);
     }
 
+    public Result getProductListCurlyGirl(Http.Request request) {
+        JsonNode json = request.body().asJson();
+        String cg = json.get("aptocg").asText();
+        List<Producto> productList = Producto.findProductoByCG(cg);
+        if (productList != null) {
+            if (request.accepts("application/json")) {
+                JsonNode jsonListProducts = play.libs.Json.toJson(productList);
+                return ok(jsonListProducts).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = productos.render(productList);
+                return Results.ok(content).as("application/xml");
+            }
+        } else {
+            return Results.notFound();
+        }
+        return status(406);
+    }
+
 }
