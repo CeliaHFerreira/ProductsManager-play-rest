@@ -39,6 +39,8 @@ DELETE      /marca/producto                 controllers.ProductController.delete
 GET         /marca/producto/list            controllers.ProductController.getProductListBrand(request: Request, name: String)
 GET         /marca/listaproducto            controllers.ProductController.getProducts(request: Request)
 POST        /marca/producto/codigo          controllers.CodigoController.postCode(request: Request, id: Long)
+GET         /marca/productoshnr             controllers.ProductController.getProductListHNR(request: Request)
+GET         /marca/productosveganos         controllers.ProductController.getProductListVegano(request: Request)
 
 # Routes producto desde categoria
 GET         /categoria/producto             controllers.ProductController.getProductItem(request: Request, id: Long)
@@ -46,6 +48,8 @@ PUT         /categoria/producto             controllers.ProductController.putPro
 DELETE      /categoria/producto             controllers.ProductController.deleteProductItem(request: Request, id: Long)
 GET         /categoria/listaproducto        controllers.ProductController.getProducts(request: Request)
 POST        /categoria/producto/codigo      controllers.CodigoController.postCode(request: Request, id: Long)
+GET         /categoria/productoshnr         controllers.ProductController.getProductListHNR(request: Request)
+GET         /categoria/productosveganos     controllers.ProductController.getProductListVegano(request: Request)
 
 #Routes codigo de barras
 GET         /marca/producto/codigo          controllers.CodigoController.getCode(request: Request)

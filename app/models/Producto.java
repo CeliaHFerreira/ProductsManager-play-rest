@@ -80,6 +80,14 @@ public class Producto extends Model {
         return find.query().where().eq("id", id).findOne();
     }
 
+    static public List<Producto> findProductoByHNR(String hnr) {
+        return find.query().where().eq("hnr", hnr).findList();
+    }
+
+    static public List<Producto> findProductoByVegano(String vegano) {
+        return find.query().where().eq("vegano", vegano).findList();
+    }
+
     static public List<Producto> getListaProductos() {
         return find.query().findList();
     }

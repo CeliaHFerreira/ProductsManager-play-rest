@@ -145,4 +145,40 @@ public class ProductController extends Controller {
         return status(406);
     }
 
+    public Result getProductListHNR(Http.Request request) {
+        JsonNode json = request.body().asJson();
+        String hnr = json.get("hnr").asText();
+        List<Producto> productList = Producto.findProductoByHNR(hnr);
+        if (productList != null) {
+            if (request.accepts("application/json")) {
+                JsonNode jsonListProducts = play.libs.Json.toJson(productList);
+                return ok(jsonListProducts).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = productos.render(productList);
+                return Results.ok(content).as("application/xml");
+            }
+        } else {
+            return Results.notFound();
+        }
+        return status(406);
+    }
+
+    public Result getProductListVegano(Http.Request request) {
+        JsonNode json = request.body().asJson();
+        String vegano = json.get("vegano").asText();
+        List<Producto> productList = Producto.findProductoByVegano(vegano);
+        if (productList != null) {
+            if (request.accepts("application/json")) {
+                JsonNode jsonListProducts = play.libs.Json.toJson(productList);
+                return ok(jsonListProducts).as("application/json");
+            } else if (request.accepts("application/xml")) {
+                Content content = productos.render(productList);
+                return Results.ok(content).as("application/xml");
+            }
+        } else {
+            return Results.notFound();
+        }
+        return status(406);
+    }
+
 }
