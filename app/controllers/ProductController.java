@@ -165,7 +165,7 @@ public class ProductController extends Controller {
 
     public Result getProductListVegano(Http.Request request) {
         JsonNode json = request.body().asJson();
-        String vegano = json.get("vegano").asText();
+        Boolean vegano = json.get("vegano").asBoolean();
         List<Producto> productList = Producto.findProductoByVegano(vegano);
         if (productList != null) {
             if (request.accepts("application/json")) {
@@ -183,7 +183,7 @@ public class ProductController extends Controller {
 
     public Result getProductListCurlyGirl(Http.Request request) {
         JsonNode json = request.body().asJson();
-        String cg = json.get("aptocg").asText();
+        Boolean cg = json.get("aptocg").asBoolean();
         List<Producto> productList = Producto.findProductoByCG(cg);
         if (productList != null) {
             if (request.accepts("application/json")) {

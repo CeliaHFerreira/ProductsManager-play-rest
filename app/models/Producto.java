@@ -84,11 +84,11 @@ public class Producto extends Model {
         return find.query().where().eq("hnr", hnr).findList();
     }
 
-    static public List<Producto> findProductoByVegano(String vegano) {
+    static public List<Producto> findProductoByVegano(Boolean vegano) {
         return find.query().where().eq("vegano", vegano).findList();
     }
 
-    static public List<Producto> findProductoByCG(String cg) {
+    static public List<Producto> findProductoByCG(Boolean cg) {
         return find.query().where().eq("aptoCG", cg).findList();
     }
 
