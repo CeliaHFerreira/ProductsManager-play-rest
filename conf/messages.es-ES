@@ -13,3 +13,4 @@ product.repeated = El producto ya existe en el servidor
 category.not.found = La categoria no existe
 brand.not.found = La marca no existe
 category.repeated = La categoria ya existe en el servidor
+code.repeated = Ese producto ya tiene un código asociado

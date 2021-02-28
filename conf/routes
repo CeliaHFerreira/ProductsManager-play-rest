@@ -13,7 +13,7 @@ POST        /marcas                         controllers.BrandsController.postBra
 
 
 # Routes marca
-GET         /marcas/marca                   controllers.BrandController.getBrandItem(request: Request, name: String)
+GET         /marcas/marca                   controllers.BrandController.getBrandItem(request: Request)
 PUT         /marcas/marca                   controllers.BrandController.putBrandItem(request: Request)
 DELETE      /marcas/marca                   controllers.BrandController.deleteBrandItem(request: Request)
 
@@ -38,16 +38,22 @@ PUT         /marca/producto                 controllers.ProductController.putPro
 DELETE      /marca/producto                 controllers.ProductController.deleteProductItem(request: Request, id: Long)
 GET         /marca/producto/list            controllers.ProductController.getProductListBrand(request: Request, name: String)
 GET         /marca/listaproducto            controllers.ProductController.getProducts(request: Request)
-POST        /marca/producto/codigo          controllers.CodigoController.postCode(request: Request, id: Long)
+GET         /marca/productoshnr             controllers.ProductController.getProductListHNR(request: Request)
+GET         /marca/productosveganos         controllers.ProductController.getProductListVegano(request: Request)
+GET         /marca/productoscurlygirl       controllers.ProductController.getProductListCurlyGirl(request: Request)
 
 # Routes producto desde categoria
 GET         /categoria/producto             controllers.ProductController.getProductItem(request: Request, id: Long)
 PUT         /categoria/producto             controllers.ProductController.putProductItem(request: Request, id: Long)
 DELETE      /categoria/producto             controllers.ProductController.deleteProductItem(request: Request, id: Long)
 GET         /categoria/listaproducto        controllers.ProductController.getProducts(request: Request)
-POST        /categoria/producto/codigo      controllers.CodigoController.postCode(request: Request, id: Long)
+GET         /categoria/productoshnr         controllers.ProductController.getProductListHNR(request: Request)
+GET         /categoria/productosveganos     controllers.ProductController.getProductListVegano(request: Request)
+GET         /categoria/productoscurlygirl   controllers.ProductController.getProductListCurlyGirl(request: Request)
 
 #Routes codigo de barras
+POST        /marca/producto/codigo          controllers.CodigoController.postCode(request: Request, id: Long)
+POST        /categoria/producto/codigo      controllers.CodigoController.postCode(request: Request, id: Long)
 GET         /marca/producto/codigo          controllers.CodigoController.getCode(request: Request)
 GET         /categoria/producto/codigo      controllers.CodigoController.getCode(request: Request)
 PUT         /marca/producto/codigo          controllers.CodigoController.putCode(request: Request)

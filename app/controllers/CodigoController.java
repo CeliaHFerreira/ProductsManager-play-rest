@@ -5,11 +5,13 @@ import models.Codigo;
 import models.Producto;
 import play.data.Form;
 import play.data.FormFactory;
+import play.i18n.Messages;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
 import play.twirl.api.Content;
 import views.xml.codigos;
+import play.i18n.MessagesApi;
 
 import javax.inject.Inject;
 
@@ -19,6 +21,11 @@ import javax.inject.Inject;
 public class CodigoController {
     @Inject
     FormFactory formfactory;
+
+    private final play.i18n.MessagesApi messagesApi;
+
+    @Inject
+    public CodigoController(MessagesApi messagesApi) { this.messagesApi = messagesApi; }
 
     public Result getCode(Http.Request request) {
         if(request.accepts("application/json")) {
@@ -46,15 +53,25 @@ public class CodigoController {
         } else {
             Codigo code = c.get();
             Producto product = Producto.findProductoById(id);
-            code.addProductoToCodigo(product);
-            product.save();
-            code.save();
-            if (request.accepts("application/json")) {
-                JsonNode jsonCodes = play.libs.Json.toJson(Codigo.getListaCodigos());
-                return Results.ok(jsonCodes).as("application/json");
-            } else if (request.accepts("application/xml")) {
-                Content content = codigos.render(Codigo.getListaCodigos());
-                return Results.ok(content).as("application/xml");
+            if (product != null) {
+                if (product.getIdCodigoBarras() == null) {
+                    code.addProductoToCodigo(product);
+                    product.save();
+                    code.save();
+                    if (request.accepts("application/json")) {
+                        JsonNode jsonCodes = play.libs.Json.toJson(Codigo.getListaCodigos());
+                        return Results.ok(jsonCodes).as("application/json");
+                    } else if (request.accepts("application/xml")) {
+                        Content content = codigos.render(Codigo.getListaCodigos());
+                        return Results.ok(content).as("application/xml");
+                    }
+                } else {
+                    Messages messages = this.messagesApi.preferred(request);
+                    String response = messages.at("code.repeated");
+                    return Results.badRequest(response);
+                }
+            } else {
+                return Results.notFound();
             }
         }
         return Results.status(406);

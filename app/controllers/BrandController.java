@@ -23,7 +23,9 @@ public class BrandController extends Controller {
     @Inject
     FormFactory formfactory;
 
-    public Result getBrandItem(Http.Request request, String name) {
+    public Result getBrandItem(Http.Request request) {
+        JsonNode json = request.body().asJson();
+        String name = json.get("nombre").asText();
         Marca brandTofind = Marca.findMarcaByNombre(name);
         if (brandTofind != null) {
             if (request.accepts("application/json")) {

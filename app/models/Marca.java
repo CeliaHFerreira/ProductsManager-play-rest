@@ -53,10 +53,10 @@ public class Marca extends Model {
 
     public static final Finder<Long,Marca> find = new Finder<>(Marca.class);
 
-
     static public Marca findMarcaByNombre(String nombre) {
         return find.query().where().eq("nombre", nombre).findOne();
     }
+
     static public Marca findMarcaById(Long id) {
         return find.query().where().eq("Id", id).findOne();
     }

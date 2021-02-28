@@ -13,3 +13,4 @@ product.repeated = Product already exists
 category.not.found = Category does not exist
 brand.not.found = Brand does not exist
 category.repeated = Category already exist
+code.repeated = The product already has code
