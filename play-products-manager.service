@@ -1,0 +1,12 @@
+[Unit]
+Description="Play hair product manager application"
+
+[Service]
+WorkingDirectory=/opt/play-products-manager/play-products-manager-1.0-SNAPSHOT
+ExecStart=/opt/play-products-manager/play-products-manager-1.0-SNAPSHOT/start.sh
+ExecStop=/bin/kill -TERM $MAINPID
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
